@@ -1,22 +1,21 @@
-import { useState } from 'react'
-
-
+import {Routes, Route} from 'react-router-dom';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Homepage from './pages/Homepage';
 function App() {
-  
+ 
+
+
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-4xl font-bold mb-4">Welcome to My App</h1>
-        <p className="text-lg text-gray-700">This is a simple React application with Tailwind CSS.</p>
-      </div>
-      <div className="flex justify-center items-center h-screen">
-        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300">
-          Click Me
-        </button>
-      </div>
-      <footer className="bg-gray-800 text-white text-center py-4 mt-8">
-        <p>&copy; 2023 My App. All rights reserved.</p>
-      </footer>
+    <div className="min-h-screen bg-base-200">
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/home" element={<Homepage />} />
+         <Route path="/" element={<Homepage />} />
+      </Routes>
+    </div>
     </>
   )
 }
