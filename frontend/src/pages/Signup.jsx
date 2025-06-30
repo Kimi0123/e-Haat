@@ -1,8 +1,10 @@
+// Signup.jsx
 import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { auth, provider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth';
+import BASE_URL from '../utils/api.js';
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +27,7 @@ function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
@@ -38,8 +40,33 @@ function Signup() {
       return;
     }
 
-    console.log('Form Submitted:', form);
-    // Send to backend here (if needed)
+    try {
+      const res = await fetch(`${BASE_URL}/auth/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          password: form.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message || "Signup successful");
+        console.log('✅ Server Response:', data);
+      } else {
+        alert(data.message || 'Signup failed');
+      }
+    } catch (err) {
+      console.error("❌ Error submitting form:", err);
+      alert("Something went wrong");
+    }
   };
 
   const handleGoogleSignup = async () => {
@@ -47,7 +74,7 @@ function Signup() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log('✅ Google SignUp Successful:', user);
-      // You can store user info in backend or global state here
+      // You can send this to backend too if needed
     } catch (error) {
       console.error('❌ Google Sign-Up Error:', error);
     }

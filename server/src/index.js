@@ -1,23 +1,26 @@
-require('dotenv').config();           // Load .env variables
-const express = require('express');
-const { connectDB, sequelize } = require('./config/db');
+require("dotenv").config(); // Load .env variables
+const express = require("express");
+const { connectDB, sequelize } = require("./config/db");
+const cors = require("cors");
 
-const authRoutes = require('./routes/auth');
+// Import routes
+const authRoutes = require("./routes/auth");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-connectDB();                          // Test DB connection
-app.use(express.json());              // Parse JSON
-app.use('/api/auth', authRoutes);     // Mount routes
+connectDB(); // Test DB connection
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON
 
+// Mount routes
+app.use("/api/auth", authRoutes);
 
-const User = require('./models/User'); // Import User model
 
 // Sync models and start server
-sequelize.sync().then(() => {
+sequelize.sync({ alter: true }).then(() => {
   app.listen(PORT, () => {
     console.log(`✅ Server is running on port ${PORT}`);
+    console.log(`🌐 API Base URL: http://localhost:${PORT}/api`);
   });
 });
-
