@@ -195,7 +195,7 @@ function Signup() {
 
           <p className="mt-4 text-center">
             Already have an account?{' '}
-            <a href="/" className="text-primary font-semibold">
+            <a href="/login" className="text-primary font-semibold">
               Login
             </a>
           </p>

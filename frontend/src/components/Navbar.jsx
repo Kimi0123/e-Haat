@@ -3,7 +3,7 @@ import Logo from "../assets/logo.png";
 function Navbar() {
   return (
     <>
-    <nav className="navbar bg-base-200 shadow-lg">
+    <nav className="navbar fixed top-0 left-0 w-full z-50 bg-base-100 shadow-md">
     
         {/* -----------------LOGO------------------- */}
         <div className="navbar-start">

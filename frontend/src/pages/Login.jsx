@@ -5,8 +5,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const togglePassword = () => {
@@ -17,7 +17,7 @@ function Login() {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -28,9 +28,9 @@ function Login() {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
 
       const data = await response.json();
@@ -39,6 +39,9 @@ function Login() {
         alert(data.message || "Login failed");
         return;
       }
+
+      // Store token in localStorage for future authenticated requests
+      localStorage.setItem("token", data.token);
 
       alert("Login successful");
       console.log(data);
@@ -82,7 +85,10 @@ function Login() {
           </div>
 
           <div className="mb-3 text-right">
-            <a href="/forgot-password" className="text-primary font-semibold text-sm">
+            <a
+              href="/forgot-password"
+              className="text-primary font-semibold text-sm"
+            >
               Forgot Password?
             </a>
           </div>
@@ -98,7 +104,7 @@ function Login() {
         </button>
 
         <p className="mt-4 text-center">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <a href="/signup" className="text-primary font-semibold">
             Sign up
           </a>
