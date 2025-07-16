@@ -19,7 +19,8 @@ export default function Dashboard() {
       {/* Navbar */}
       <Navbar />
 
-      <div className="flex flex-1 w-full">
+      {/* Content wrapper with padding to avoid overlap */}
+      <div className="flex flex-1 w-full pt-16">
         {/* Sidebar */}
         <aside className="w-[20%] border-r px-6 py-8">
           <ul className="space-y-6 font-medium text-gray-700">
@@ -67,7 +68,7 @@ export default function Dashboard() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 bg-gray-100 px-12 py-10">
+        <main className="flex-1 bg-gray-100 px-12 pt-8 pb-10">
           <h1 className="text-2xl font-bold mb-6">My Account</h1>
           <div className="bg-white p-8 rounded-md shadow space-y-4 w-full">
             <div className="grid grid-cols-3 gap-8">
@@ -77,14 +78,14 @@ export default function Dashboard() {
               </div>
               <div>
                 <p className="font-medium">
-                  Email Address:{" "}
+                  Email Address:
                   <span className="text-red-600 cursor-pointer ml-1">Change</span>
                 </p>
                 <p>sushmita@gmail.com</p>
               </div>
               <div>
                 <p className="font-medium">
-                  Mobile No. 9834567{" "}
+                  Mobile No. 9834567
                   <span className="text-red-600 cursor-pointer ml-1">Change</span>
                 </p>
                 <p>Please add your mobile number</p>

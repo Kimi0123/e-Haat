@@ -1,258 +1,253 @@
-import React, { useState } from "react";
-import {
-  FaMobileAlt,
-  FaShoppingBag,
-  FaTshirt,
-  FaGlasses,
-  FaCoffee,
-  FaLaptop,
-  FaBlender,
-  FaCartPlus,
-  FaChild,
-} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Navbar_after from "../components/Navbar_after";
+import Hero from "../components/Hero";
 
-export default function Homepage_after() {
-  const [cart, setCart] = useState([]);
-  const navigate = useNavigate();
+const EhaatLanding = () => {
+  const [scrollY, setScrollY] = useState(0);
+  const [isVisible, setIsVisible] = useState({});
 
-  const handleClick = (label) => {
-    const path = `/category/${label.toLowerCase().replace(/[\s&]+/g, "-")}`;
-    navigate(path);
-  };
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const addToCart = (product) => {
-    setCart((prev) => [...prev, product]);
-    alert(`Added "${product.title}" to cart. Total items: ${cart.length + 1}`);
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible((prev) => ({
+              ...prev,
+              [entry.target.id]: true,
+            }));
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const sections = document.querySelectorAll("[data-animate]");
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   const categories = [
-    { icon: <FaMobileAlt />, label: "Smartphones" },
-    { icon: <FaShoppingBag />, label: "Women's Fashion" },
-    { icon: <FaTshirt />, label: "Men's Fashion" },
-    { icon: <FaGlasses />, label: "Accessories" },
-    { icon: <FaCoffee />, label: "Cosmetics" },
-    { icon: <FaLaptop />, label: "Laptops" },
-    { icon: <FaBlender />, label: "Home Appliances" },
-    { icon: <FaCartPlus />, label: "Groceries" },
-    { icon: <FaCartPlus />, label: "Footwear" },
-    { icon: <FaChild />, label: "Kids & Toys" },
+    "Electronics", "Clothing", "Beauty", "Home", "Furniture", "Toys",
+    "Groceries", "Accessories", "Footwear", "Kitchen", "Stationery", "Handicrafts"
   ];
 
-  const flashItems = [
+  const flashSale = [
     {
-      img: "\\iphone.webp",
-      title: "Apple iPhone 15 | A16 Bionic | 48MP Main Camera",
-      discount: "24%",
+      title: "iPhone 15 - 128GB | A16 Chip",
       price: "Rs. 104,100",
       original: "Rs. 124,100",
+      discount: "16%",
+      image: "/iphone.png"
     },
     {
-      img: "\\dress.png",
-      title: "Women's Floral Print Backless Long Dress",
-      discount: "15%",
-      price: "Rs. 2,125",
-      original: "Rs. 2500",
-    },
-    {
-      img: "\\menshirt.png",
-      title: "Men's Linen Button-Down Casual Shirt",
-      discount: "20%",
+      title: "Men's Casual Shirt - Linen",
       price: "Rs. 1,600",
-      original: "Rs. 2000",
+      original: "Rs. 2,000",
+      discount: "20%",
+      image: "/menshirt.png"
     },
     {
-      img: "\\eyeshadow.png",
-      title: "Highly Pigmented Natural Eyeshadow Palette",
-      discount: "10%",
-      price: "Rs. 1,080",
-      original: "Rs. 1200",
+      title: "Floral Long Dress - Backless",
+      price: "Rs. 2,125",
+      original: "Rs. 2,500",
+      discount: "15%",
+      image: "/dress.png"
+    },
+    {
+      title: "Cordless Beard Trimmer - USB",
+      price: "Rs. 1,800",
+      original: "Rs. 2,200",
+      discount: "18%",
+      image: "/trimmer.png"
     },
   ];
 
-  const justForYouItems = [
+  const justForYou = [
     {
       title: "Black TWS Wireless Earbuds Pro Bluetooth Connectivity",
       price: "Rs. 2,200",
-      img: "\\earbuds.png",
+      image: "/earbuds.png",
     },
     {
       title: "New Thick Soled Slide Sandals, Slip-On Casual Loafers",
       price: "Rs. 2,900",
-      img: "sandals.png",
+      image: "/sandals.png",
     },
     {
       title: "Fashionable Husky Pattern Anti-Fall Matte Sand Case",
       price: "Rs. 450",
-      img: "\\huskycase.png",
+      image: "/huskycase.png",
     },
     {
       title: "SUMWON Premium Linen Look Skater Fit Pants",
       price: "Rs. 2,450",
-      img: "pants1.png",
+      image: "/pants1.png",
     },
     {
       title: "Cowgirl Boots, Thick Sole Mid-Calf High Heel Zipper",
       price: "Rs. 5,600",
-      img: "boots.png",
+      image: "/boots.png",
     },
     {
       title: "iPhone 16 Pro Max 256GB",
       price: "Rs. 207,000",
-      img: "iphone16.png",
+      image: "/iphone16.png",
     },
     {
       title: "Plastic Geometric Classic Never Outdated Glasses",
       price: "Rs. 1,800",
-      img: "glasses.png",
+      image: "/glasses.png",
     },
     {
       title: "Bohemian Style Beaded Bracelets With Shell, Beads",
       price: "Rs. 650",
-      img: "bracelets.png",
+      image: "/bracelets.png",
     },
     {
       title: "Anua – Heartleaf Silky Moisture Sun Cream 50ml",
       price: "Rs. 2,300",
-      img: "cream.png",
+      image: "/cream.png",
     },
     {
       title: "Classic Luxury Men Watch Business Leather Strap Quartz",
       price: "Rs. 6,450",
-      img: "watch.png",
+      image: "/watch.png",
     },
     {
       title: "PETITE Autumn Casual Long Sleeve Slim Fit Shirt",
       price: "Rs. 1,350",
-      img: "stripedshirt.png",
+      image: "/stripedshirt.png",
     },
     {
       title: "L.A. Colors Mineral Pressed Powder",
       price: "Rs. 600",
-      img: "lapowder.png",
+      image: "/lapowder.png",
     },
   ];
 
+  const features = [
+    { icon: "🚚", title: "Fast Delivery", description: "Delivery across Nepal in 2–4 days." },
+    { icon: "💳", title: "Secure Payments", description: "Pay with Khalti, eSewa, COD." },
+    { icon: "📦", title: "Wide Range", description: "From groceries to gadgets in one place." },
+    { icon: "🛠️", title: "Local Support", description: "Support local Nepali sellers." }
+  ];
+
   return (
-    <>
-      <Navbar_after />
+    <div className="min-h-screen bg-white">
+      <Navbar />
 
-      {/* Sidebar + Banner */}
-      <div className="flex px-10 py-6 gap-6 bg-gray-50">
-        {/* Sidebar */}
-        <aside className="w-1/5">
-          <div className="bg-white border rounded-xl shadow-sm">
-            <h2 className="bg-red-600 text-white px-4 py-2 font-semibold text-sm rounded-t-xl">
-              Shop by Categories
-            </h2>
-            <ul className="divide-y">
-              {categories.slice(0, 5).map(({ icon, label }, i) => (
-                <li
-                  key={i}
-                  onClick={() => handleClick(label)}
-                  className="flex items-center gap-3 px-4 py-3 text-sm font-medium cursor-pointer hover:text-red-600 hover:bg-gray-100 transition-colors text-gray-800"
-                >
-                  <span className="text-lg text-gray-800">{icon}</span>
-                  <span className="text-gray-800">{label}</span>
-                </li>
+      {/* Scroll Indicator */}
+      <div
+        className="scroll-indicator bg-red-600 h-1 fixed top-0 left-0 z-40"
+        style={{
+          width: `${(scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%`,
+        }}
+      ></div>
+
+      {/* Main Content With Padding */}
+      <div className="pt-[132px]">
+        <Hero />
+
+        {/* Flash Sale */}
+        <section className="py-16 bg-white" data-animate>
+          <div className="max-w-7xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-red-800 mb-6">⚡ Flash Sale</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {flashSale.map((item, i) => (
+                <div key={i} className="border rounded-xl shadow hover:shadow-lg p-4 transition-transform hover:-translate-y-1">
+                  <img src={item.image} alt={item.title} className="w-full h-40 object-cover rounded" />
+                  <p className="mt-3 font-semibold text-black">{item.title}</p>
+                  <span className="badge badge-error mt-2">-{item.discount}</span>
+                  <div className="flex items-center gap-2 mt-2">
+                    <p className="font-bold text-red-600">{item.price}</p>
+                    <p className="line-through text-sm text-gray-500">{item.original}</p>
+                  </div>
+                  <button className="btn bg-red-600 hover:bg-red-700 text-white btn-sm w-full mt-3">Add to Cart</button>
+                </div>
               ))}
-              <li
-                className="flex items-center justify-center px-4 py-3 text-sm font-medium cursor-pointer text-blue-600 hover:underline"
-                onClick={() => navigate("/category")}
-              >
-                View All Categories
-              </li>
-            </ul>
-          </div>
-        </aside>
-
-        {/* Banner */}
-        <section className="w-4/5">
-          <div className="rounded overflow-hidden relative h-80 shadow">
-            <img
-              src="\\src\\pages\\banner_new.jpg"
-              alt="Promotional banner"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center px-10 text-white leading-tight">
-              <p className="text-4xl font-black">Best Place</p>
-              <p className="text-2xl italic">To Find</p>
-              <p className="text-5xl font-extrabold mt-1">What You Are</p>
-              <p className="text-2xl italic">Looking For</p>
-              <button className="btn bg-black mt-4 px-6 py-2 text-sm rounded hover:bg-gray-800 w-fit text-white border-none">
-                SHOP NOW
-              </button>
             </div>
+          </div>
+        </section>
+
+        {/* Just For You */}
+        <section className="py-16 bg-red-50" data-animate>
+          <div className="max-w-7xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-red-800 mb-6">🎯 Just For You</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+              {justForYou.map((item, i) => (
+                <div key={i} className="border rounded-xl shadow p-4 hover:shadow-md transition-transform hover:-translate-y-1 bg-white">
+                  <img src={item.image} alt={item.title} className="w-full h-40 object-cover rounded mb-2" />
+                  <p className="text-sm font-medium text-black">{item.title}</p>
+                  <p className="text-red-600 font-bold mt-1">{item.price}</p>
+                  <button className="btn bg-red-600 hover:bg-red-700 text-white btn-sm w-full mt-3">Add to Cart</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="py-20 bg-white" data-animate>
+          <div className="max-w-7xl mx-auto px-4 text-center">
+            <h2 className="text-4xl font-bold text-red-800 mb-12">Why Shop With e-Haat?</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {features.map((f, i) => (
+                <div key={i} className="bg-red-50 p-6 rounded-xl shadow hover:shadow-md transition-transform hover:-translate-y-1">
+                  <div className="text-4xl mb-3">{f.icon}</div>
+                  <h3 className="text-xl font-semibold mb-2 text-red-700">{f.title}</h3>
+                  <p className="text-gray-700 text-sm">{f.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Categories */}
+        <section id="categories-section" className="py-20 bg-white" data-animate>
+          <div className="max-w-7xl mx-auto px-4">
+            <h2 className="text-4xl font-bold text-red-800 text-center mb-12">Shop by Category</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {categories.map((cat, i) => (
+                <div key={i} className="border rounded-lg p-4 text-center hover:shadow transition-transform hover:scale-105 cursor-pointer text-black">
+                  <span className="text-lg font-medium">{cat}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Stats */}
+        <section className="py-20 bg-red-600 text-white" data-animate>
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div><h3 className="text-4xl font-bold">25,000+</h3><p>Orders Delivered</p></div>
+            <div><h3 className="text-4xl font-bold">15,000+</h3><p>Happy Customers</p></div>
+            <div><h3 className="text-4xl font-bold">500+</h3><p>Sellers Onboard</p></div>
+            <div><h3 className="text-4xl font-bold">24/7</h3><p>Support Available</p></div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="py-20 bg-white text-center">
+          <h2 className="text-4xl font-bold text-red-800 mb-4">Join the e-Haat Family</h2>
+          <p className="text-lg mb-6 text-gray-700">Start your seamless online shopping journey now.</p>
+          <div className="flex justify-center gap-4">
+            <Link to="/signup" className="btn bg-red-600 text-white hover:bg-red-700">Create Account</Link>
+            <Link to="/login" className="btn btn-outline border-red-600 text-red-600 hover:bg-red-600 hover:text-white">Login</Link>
           </div>
         </section>
       </div>
 
-      {/* Flash Sale */}
-      <section className="px-10 pb-10 bg-white">
-        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2 text-black">
-          FLASH SALE <span className="text-blue-500 text-xl">⚡</span>
-        </h2>
-        <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-2">
-          {flashItems.map((item, i) => (
-            <div
-              key={i}
-              className="min-w-[220px] bg-white border shadow-sm rounded p-4 text-black flex-shrink-0"
-            >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-48 object-cover mb-2 rounded"
-              />
-              <p className="text-sm font-medium text-black">{item.title}</p>
-              <div className="mt-2">
-                <span className="badge badge-error text-white">
-                  -{item.discount} off
-                </span>
-              </div>
-              <p className="text-lg font-bold text-black mt-1">{item.price}</p>
-              <p className="text-sm line-through text-gray-500">{item.original}</p>
-              <button
-                onClick={() => addToCart(item)}
-                className="btn mt-4 bg-red-600 hover:bg-red-700 text-white btn-sm w-full"
-              >
-                Add to Cart
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Just For You */}
-      <section className="px-10 py-8 bg-white">
-        <h2 className="text-2xl font-bold mb-6 text-black">JUST FOR YOU</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {justForYouItems.map((item, i) => (
-            <div
-              key={i}
-              className="bg-white border rounded shadow-sm p-4 text-black hover:shadow-md transition duration-200 flex flex-col"
-            >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-44 object-cover rounded mb-2"
-              />
-              <p className="text-sm font-medium flex-grow">{item.title}</p>
-              <p className="text-red-600 font-bold text-base mt-2">{item.price}</p>
-              <button
-                onClick={() => addToCart(item)}
-                className="btn mt-4 bg-red-600 hover:bg-red-700 text-white btn-sm w-full"
-              >
-                Add to Cart
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <Footer />
-    </>
+    </div>
   );
-}
+};
+
+export default EhaatLanding;

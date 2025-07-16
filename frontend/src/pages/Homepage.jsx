@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import {
-  FaMobileAlt,
-  FaShoppingBag,
-  FaTshirt,
-  FaGlasses,
-  FaCoffee,
-  FaLaptop,
-  FaBlender,
-  FaCartPlus,
-  FaChild,
+  FaMobileAlt, FaShoppingBag, FaTshirt, FaGlasses, FaCoffee,
+  FaLaptop, FaBlender, FaCartPlus, FaChild,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -43,7 +37,7 @@ export default function Homepage_after() {
 
   const flashItems = [
     {
-      img: "/iphone.png",
+      img: "iphone.png",
       title: "Apple iPhone 15 | A16 Bionic | 48MP Main Camera",
       discount: "24%",
       price: "Rs. 104,100",
@@ -69,6 +63,13 @@ export default function Homepage_after() {
       discount: "10%",
       price: "Rs. 1,080",
       original: "Rs. 1200",
+    },
+    {
+      img: "/trimmer.png",
+      title: "Philips Cordless Beard Trimmer - USB Charging",
+      discount: "18%",
+      price: "Rs. 1,800",
+      original: "Rs. 2,200",
     },
   ];
 
@@ -137,55 +138,77 @@ export default function Homepage_after() {
 
   return (
     <>
-      <Navbar />
+      <Navbar/>
 
       {/* Sidebar + Banner */}
       <div className="flex px-10 py-6 gap-6 bg-gray-50">
         {/* Sidebar */}
         <aside className="w-1/5">
-          <div className="bg-white border rounded-xl shadow-sm">
+          <motion.div
+            className="bg-white border rounded-xl shadow-md"
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="bg-red-600 text-white px-4 py-2 font-semibold text-sm rounded-t-xl">
               Shop by Categories
             </h2>
             <ul className="divide-y">
               {categories.slice(0, 5).map(({ icon, label }, i) => (
-                <li
+                <motion.li
                   key={i}
                   onClick={() => handleClick(label)}
                   className="flex items-center gap-3 px-4 py-3 text-sm font-medium cursor-pointer hover:text-red-600 hover:bg-gray-100 transition-colors text-gray-800"
+                  whileHover={{ scale: 1.05 }}
                 >
-                  <span className="text-lg text-gray-800">{icon}</span>
-                  <span className="text-gray-800">{label}</span>
-                </li>
+                  <span className="text-lg">{icon}</span>
+                  <span>{label}</span>
+                </motion.li>
               ))}
               <li
-                className="flex items-center justify-center px-4 py-3 text-sm font-medium cursor-pointer text-blue-600 hover:underline"
+                className="text-center py-3 text-blue-600 cursor-pointer hover:underline"
                 onClick={() => alert("Expand to show all categories")}
               >
                 View All Categories
               </li>
             </ul>
-          </div>
+          </motion.div>
         </aside>
 
         {/* Banner */}
         <section className="w-4/5">
-          <div className="rounded overflow-hidden relative h-80 shadow">
+          <motion.div
+            className="rounded overflow-hidden relative h-80 shadow-lg"
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
             <img
               src="/images/myphoto.jpg"
               alt="Promotional banner"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center px-10 text-white leading-tight">
-              <p className="text-4xl font-black">Best Place</p>
-              <p className="text-2xl italic">To Find</p>
-              <p className="text-5xl font-extrabold mt-1">What You Are</p>
-              <p className="text-2xl italic">Looking For</p>
-              <button className="btn bg-black mt-4 px-6 py-2 text-sm rounded hover:bg-gray-800 w-fit text-white border-none">
+            <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center px-10 text-white">
+              <motion.p className="text-4xl font-black" initial={{ y: -20 }} animate={{ y: 0 }}>
+                Best Place
+              </motion.p>
+              <motion.p className="text-2xl italic" initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }}>
+                To Find
+              </motion.p>
+              <motion.p className="text-5xl font-extrabold mt-1" initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.4 }}>
+                What You Are
+              </motion.p>
+              <motion.p className="text-2xl italic" initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.6 }}>
+                Looking For
+              </motion.p>
+              <motion.button
+                className="btn bg-black mt-4 px-6 py-2 text-sm rounded hover:bg-gray-800 text-white border-none w-fit"
+                whileHover={{ scale: 1.05 }}
+              >
                 SHOP NOW
-              </button>
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
         </section>
       </div>
 
@@ -196,30 +219,25 @@ export default function Homepage_after() {
         </h2>
         <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-2">
           {flashItems.map((item, i) => (
-            <div
+            <motion.div
               key={i}
-              className="min-w-[220px] bg-white border shadow-sm rounded p-4 text-black flex-shrink-0"
+              className="w-[250px] h-[390px] bg-white border shadow-sm rounded p-4 text-black flex-shrink-0 hover:shadow-lg flex flex-col justify-between"
+              whileHover={{ scale: 1.05 }}
             >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-48 object-cover mb-2 rounded"
-              />
-              <p className="text-sm font-medium text-black">{item.title}</p>
-              <div className="mt-2">
-                <span className="badge badge-error text-white">
-                  -{item.discount} off
-                </span>
+              <img src={item.img} alt={item.title} className="w-full h-40 object-cover mb-2 rounded" />
+              <p className="text-sm font-medium line-clamp-2">{item.title}</p>
+              <span className="badge badge-error text-white mt-2 w-fit">-{item.discount} off</span>
+              <div className="mt-1">
+                <p className="text-lg font-bold">{item.price}</p>
+                <p className="text-sm line-through text-gray-500">{item.original}</p>
               </div>
-              <p className="text-lg font-bold text-black mt-1">{item.price}</p>
-              <p className="text-sm line-through text-gray-500">{item.original}</p>
               <button
                 onClick={() => addToCart(item)}
-                className="btn mt-4 bg-red-600 hover:bg-red-700 text-white btn-sm w-full"
+                className="btn mt-2 bg-red-600 hover:bg-red-700 text-white btn-sm w-full"
               >
                 Add to Cart
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -229,16 +247,17 @@ export default function Homepage_after() {
         <h2 className="text-2xl font-bold mb-6 text-black">JUST FOR YOU</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {justForYouItems.map((item, i) => (
-            <div
+            <motion.div
               key={i}
-              className="bg-white border rounded shadow-sm p-4 text-black hover:shadow-md transition duration-200 flex flex-col"
+              className="bg-white border rounded shadow-sm p-4 text-black hover:shadow-md flex flex-col transition duration-200"
+              whileHover={{ scale: 1.05 }}
             >
               <img
                 src={item.img}
                 alt={item.title}
                 className="w-full h-44 object-cover rounded mb-2"
               />
-              <p className="text-sm font-medium flex-grow">{item.title}</p>
+              <p className="text-sm font-medium flex-grow line-clamp-2">{item.title}</p>
               <p className="text-red-600 font-bold text-base mt-2">{item.price}</p>
               <button
                 onClick={() => addToCart(item)}
@@ -246,7 +265,7 @@ export default function Homepage_after() {
               >
                 Add to Cart
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

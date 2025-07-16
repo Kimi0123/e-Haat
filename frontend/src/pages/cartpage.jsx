@@ -16,11 +16,10 @@ export default function Cart() {
 
   return (
     <>
-      
-      <Navbar/>
+      <Navbar />
 
-      <div className="px-6 py-10 bg-white text-black max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold mb-8">Cart</h2>
+      <div className="px-6 pt-[140px] pb-10 bg-white text-black max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold mb-8">🛒 Cart</h2>
 
         {/* Table Header */}
         <div className="grid grid-cols-4 font-semibold border-b py-3">
@@ -75,9 +74,9 @@ export default function Cart() {
             <input
               type="text"
               placeholder="Coupon Code"
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full max-w-xs border px-4 py-2 rounded"
             />
-            <button className="btn bg-red-600 text-white hover:bg-red-700">
+            <button className="btn bg-red-600 text-white hover:bg-red-700 px-4">
               Apply Coupon
             </button>
           </div>

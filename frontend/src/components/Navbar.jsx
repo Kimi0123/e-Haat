@@ -1,80 +1,71 @@
-import React from "react";
-import { FaHeart, FaShoppingBag, FaHeadset } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom"; // import Link here
-
-const Profile = "https://i.pravatar.cc/300";
+// src/components/Navbar.jsx
+import React, { useState } from "react";
+import bag from "../assets/bag.svg";
+import ehaat from "../assets/ehaat.svg";
 
 function Navbar() {
-  const navigate = useNavigate();
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      {/* Top Navbar */}
-      <nav className="flex items-center justify-between px-6 py-3 shadow bg-white">
-        {/* Logo + Brand */}
-        <div className="flex items-center gap-2">
-          <img
-            src="/logoe-haat.png"
-            alt="Logo"
-            className="h-10 w-10 object-contain"
-          />
-          <span className="text-3xl font-extrabold text-black">e-Haat</span>
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow-md text-black">
+        <div className="flex justify-between items-center h-20 px-4 md:px-10">
+          <a href="/" className="flex items-center space-x-2">
+            <img src={ehaat} alt="e-haat logo" className="h-10" />
+          </a>
+
+          <div className="hidden md:flex flex-1 justify-center">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-[250px] md:w-[400px] px-4 py-2 rounded-full border border-gray-300 focus:border-red-400 focus:outline-none shadow-sm text-black"
+            />
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <a href="/login" className="text-sm hover:text-red-500">Login</a>
+            <a href="/signup" className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm">Sign Up</a>
+            <a href="/cart"><img src={bag} alt="Cart" className="h-6" /></a>
+
+            <button
+              className="md:hidden"
+              onClick={() => setMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="flex items-center w-full max-w-xl mx-6">
-          <input
-            type="text"
-            placeholder="Search products"
-            className="flex-grow px-4 py-2 border border-gray-300 text-black placeholder-gray-500 rounded-l-md focus:outline-none focus:ring-2 focus:ring-red-400"
-          />
-          <button className="bg-red-600 text-white px-4 py-2 rounded-r-md hover:bg-red-700">
-            Search
-          </button>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex justify-center items-center bg-gray-100 space-x-6 text-sm h-12">
+          <a href="/" className="hover:text-red-500">Home</a>
+          <a href="#categories-section" className="hover:text-red-500">Categories</a>
+          <a href="/deals" className="hover:text-red-500">Deals</a>
+         
+          <a href="/about" className="hover:text-red-500">About</a>
+          <a href="/contact" className="hover:text-red-500">Contact</a>
         </div>
 
-        {/* Icons + Auth Buttons */}
-        <div className="flex items-center gap-4">
-          <FaHeart className="text-2xl text-black cursor-pointer" />
-          <FaShoppingBag
-            className="text-2xl text-black cursor-pointer"
-            onClick={() => navigate("/cart")}
-          />
-          <button
-            className="text-black border border-gray-400 px-3 py-1 rounded hover:bg-gray-100"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </button>
-          <button
-            className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-            onClick={() => navigate("/signup")}
-          >
-            Sign Up
-          </button>
-        </div>
+        {/* Mobile Dropdown */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white shadow-md px-4 pt-2 pb-4">
+            <a href="/" className="block py-2">Home</a>
+            <a href="#categories-section" className="block py-2">Categories</a>
+            <a href="/deals" className="block py-2">Deals</a>
+            
+            <a href="/about" className="block py-2">About</a>
+            <a href="/contact" className="block py-2">Contact</a>
+          </div>
+        )}
       </nav>
-
-      {/* Line between navbars */}
-      <div className="border-t border-gray-200"></div>
-
-      {/* Bottom Navigation */}
-      <div className="flex justify-between items-center px-6 py-2 bg-white text-black text-sm font-medium">
-        <div className="flex gap-6">
-          <Link to="/" className="hover:text-red-600">Home</Link>
-          <Link to="/category" className="hover:text-red-600">Category</Link>
-          <Link to="/about-us" className="hover:text-red-600">About Us</Link> {/* use /about-us as your route */}
-          <Link to="/products" className="hover:text-red-600">Products</Link>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <FaHeadset className="text-red-600" />
-          <span className="text-gray-700">Hotline</span>
-          <span className="font-bold text-black">01-6675290</span>
-        </div>
-      </div>
-
-      {/* Bottom Line */}
-      <div className="border-t border-gray-200"></div>
     </>
   );
 }

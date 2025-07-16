@@ -45,34 +45,35 @@ export default function Deals() {
     <>
       <Navbar />
 
-      <main className="px-6 sm:px-10 py-10 bg-gray-50 min-h-screen">
-        <h1 className="text-3xl font-bold mb-6 text-red-600 text-center">
-          Today's Best Deals 🔥
+      <main className="px-6 sm:px-10 pt-[140px] pb-16 bg-gray-50 min-h-screen">
+        <h1 className="text-4xl font-bold mb-10 text-red-600 text-center">
+          🔥 Today's Best Deals
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {deals.map((item, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-sm border hover:shadow-md transition duration-200 flex flex-col p-4"
+              className="bg-white rounded-xl shadow border hover:shadow-lg transition duration-300 p-4 flex flex-col"
             >
               <img
                 src={item.img}
                 alt={item.title}
                 className="h-48 w-full object-cover rounded mb-4"
               />
-              <p className="font-semibold text-sm text-gray-800 flex-grow">
-                {item.title}
-              </p>
-              <div className="mt-2">
-                <span className="badge badge-error text-white">
+              <p className="font-semibold text-base text-black mb-2">{item.title}</p>
+
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-sm bg-red-600 text-white px-2 py-0.5 rounded-full">
                   -{item.discount}
                 </span>
               </div>
-              <p className="text-lg font-bold text-black mt-1">{item.price}</p>
-              <p className="line-through text-sm text-gray-500">
-                {item.original}
-              </p>
+
+              <div className="flex items-center gap-2">
+                <p className="text-lg font-bold text-red-600">{item.price}</p>
+                <p className="line-through text-sm text-gray-500">{item.original}</p>
+              </div>
+
               <button className="btn mt-4 bg-red-600 text-white hover:bg-red-700 btn-sm">
                 Add to Cart
               </button>
