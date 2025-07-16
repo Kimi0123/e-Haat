@@ -1,10 +1,14 @@
+// Navbar component
+// Props:
+//   showSecondNav (bool, optional): controls secondary nav visibility (for scroll/hide effect)
+//   isMenuOpen, setMenuOpen (optional): for mobile menu toggle
 import bag from "../assets/bag.svg";
 import ehaat from "../assets/ehaat.svg";
 
-export const NAVBAR_HEIGHT = 80;      // Primary nav height in px
-export const SECOND_NAV_HEIGHT = 48;  // Secondary nav height in px
+export const NAVBAR_HEIGHT = 80; // Primary nav height in px
+export const SECOND_NAV_HEIGHT = 48; // Secondary nav height in px
 
-function Navbar({ showSecondNav, isMenuOpen, setMenuOpen }) {
+function Navbar({ showSecondNav = true, isMenuOpen, setMenuOpen }) {
   return (
     <>
       {/* Primary Navbar */}
@@ -26,7 +30,9 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen }) {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <a href="/login" className="text-sm hover:text-red-500">Login</a>
+            <a href="/login" className="text-sm hover:text-red-500">
+              Login
+            </a>
             <a
               href="/signup"
               className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm"
@@ -40,7 +46,7 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen }) {
             {/* Hamburger icon (mobile only) */}
             <button
               className="md:hidden"
-              onClick={() => setMenuOpen(!isMenuOpen)}
+              onClick={() => setMenuOpen && setMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
               <svg
@@ -70,23 +76,47 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen }) {
             showSecondNav ? "h-12" : "h-0"
           }`}
         >
-          <a href="/" className="hover:text-red-500">Home</a>
-          <a href="/categories" className="hover:text-red-500">Categories</a>
-          <a href="/deals" className="hover:text-red-500">Deals</a>
-          <a href="/offers" className="hover:text-red-500">Offers</a>
-          <a href="/about" className="hover:text-red-500">About</a>
-          <a href="/contact" className="hover:text-red-500">Contact</a>
+          <a href="/" className="hover:text-red-500">
+            Home
+          </a>
+          <a href="/categories" className="hover:text-red-500">
+            Categories
+          </a>
+          <a href="/deals" className="hover:text-red-500">
+            Deals
+          </a>
+          <a href="/offers" className="hover:text-red-500">
+            Offers
+          </a>
+          <a href="/about" className="hover:text-red-500">
+            About
+          </a>
+          <a href="/contact" className="hover:text-red-500">
+            Contact
+          </a>
         </div>
 
         {/* Mobile Menu (shown when menu open) */}
         {isMenuOpen && (
           <div className="md:hidden bg-white shadow-md px-4 pt-2 pb-4">
-            <a href="/" className="block py-2">Home</a>
-            <a href="/categories" className="block py-2">Categories</a>
-            <a href="/deals" className="block py-2">Deals</a>
-            <a href="/offers" className="block py-2">Offers</a>
-            <a href="/about" className="block py-2">About</a>
-            <a href="/contact" className="block py-2">Contact</a>
+            <a href="/" className="block py-2">
+              Home
+            </a>
+            <a href="/categories" className="block py-2">
+              Categories
+            </a>
+            <a href="/deals" className="block py-2">
+              Deals
+            </a>
+            <a href="/offers" className="block py-2">
+              Offers
+            </a>
+            <a href="/about" className="block py-2">
+              About
+            </a>
+            <a href="/contact" className="block py-2">
+              Contact
+            </a>
           </div>
         )}
       </nav>
