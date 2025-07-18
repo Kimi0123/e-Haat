@@ -124,7 +124,7 @@ export default function BillingPage() {
 
             {/* Payment Options */}
             <div className="space-y-2 mt-4">
-              <label className="flex items-center gap-2">
+              {/* <label className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="payment"
@@ -134,7 +134,7 @@ export default function BillingPage() {
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 />
                 <span>Esewa, Khalti</span>
-              </label>
+              </label> */}
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
