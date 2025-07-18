@@ -5,6 +5,8 @@ const cors = require("cors");
 
 // Import routes
 const authRoutes = require("./routes/auth");
+const reviewRoutes = require("./routes/review");
+const wishlistRoutes = require("./routes/wishlist");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +17,8 @@ app.use(express.json()); // Parse JSON
 
 // Mount routes
 app.use("/api/auth", authRoutes);
-
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 
 // Sync models and start server
 sequelize.sync({ alter: true }).then(() => {

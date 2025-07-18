@@ -1,7 +1,3 @@
-// Store tokens in memory (import from auth.js or use a shared module)
-// For now, we'll recreate the map here - in production, use a shared module
-const activeTokens = new Map();
-
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -10,13 +6,10 @@ function authenticateJWT(req, res, next) {
 
   const token = authHeader.split(" ")[1];
 
-  // Check if token exists and is valid
-  if (!activeTokens.has(token)) {
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   // Attach user ID to request
-  req.user = activeTokens.get(token);
+  req.userId = decoded.id;
   next();
 }
 

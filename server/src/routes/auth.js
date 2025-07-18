@@ -2,15 +2,12 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const authenticateJWT = require("../middleware/auth");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
-// Store tokens in memory (in production, use Redis or database)
-const activeTokens = new Map(); // token -> userId
-
-// Generate 6-digit numeric token
-function generateNumericToken() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+function generateToken(user) {
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 }
 
 // ----------------------- SIGNUP -----------------------
@@ -49,7 +46,7 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    
+
     // Check if user exists
     const user = await User.findOne({ where: { email } });
     if (!user) {
@@ -63,10 +60,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Generate 6-digit numeric token
-    const token = generateNumericToken();
-
-    // Store token with user ID
-    activeTokens.set(token, user.id);
+    const token = generateToken(user);
 
     res.json({
       message: "Login successful",
@@ -89,7 +83,7 @@ router.post("/login", async (req, res) => {
 router.get("/profile", authenticateJWT, async (req, res) => {
   try {
     // req.user contains the user ID from token
-    const user = await User.findByPk(req.user, {
+    const user = await User.findByPk(req.userId, {
       attributes: { exclude: ["password"] }, // Don't send password
     });
 

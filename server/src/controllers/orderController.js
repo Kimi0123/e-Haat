@@ -40,3 +40,13 @@ exports.getOrdersByUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+// Get all orders for a user (future use)
+exports.getAllOrders = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const orders = await Order.findAll();
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
