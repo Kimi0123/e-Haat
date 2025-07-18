@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
-import { auth, provider } from '../firebase';
+import { auth, provider } from '../firebase.js';
 import { signInWithPopup } from 'firebase/auth';
 import BASE_URL from '../utils/api.js';
 
