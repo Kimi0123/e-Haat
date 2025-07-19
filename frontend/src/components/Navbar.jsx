@@ -3,12 +3,16 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import bag from "../assets/bag.svg";
 import ehaat from "../assets/ehaat.svg";
+import { useAuth } from "../AuthContext";
+import { useNotification } from "../NotificationContext";
 
 export const NAVBAR_HEIGHT = 80;
 export const SECOND_NAV_HEIGHT = 48;
 
 function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const { logout } = useAuth();
+  const { showNotification } = useNotification();
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -18,6 +22,18 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
   ];
+
+  const handleLogout = () => {
+    logout();
+    setDropdownOpen(false);
+    showNotification(
+      "info",
+      "Logged Out",
+      "You have been successfully logged out."
+    );
+    // Optionally redirect to home page
+    window.location.href = "/";
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow-md text-black">
@@ -67,12 +83,12 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
                     >
                       Orders
                     </a>
-                    <a
-                      href="/logout"
-                      className="block px-4 py-2 text-sm hover:bg-gray-100 text-red-500"
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-500"
                     >
                       Logout
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>
