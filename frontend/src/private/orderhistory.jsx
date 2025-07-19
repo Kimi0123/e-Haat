@@ -43,7 +43,6 @@ export default function OrderHistory() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-black">
-      <Navbar />
       <main className="flex-1 px-8 py-10 bg-gray-100">
         <h1 className="text-3xl font-bold mb-8">Order History</h1>
         <div className="bg-white shadow rounded-lg p-6">
