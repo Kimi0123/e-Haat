@@ -37,6 +37,7 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow-md text-black">
+      {/* Main Navbar */}
       <div className="flex justify-between items-center h-20 px-4 md:px-10">
         {/* Logo */}
         <a href="/" className="flex items-center space-x-2">
@@ -143,27 +144,39 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
         </div>
       </div>
 
-      {/* Secondary Nav */}
+      {/* Secondary Navbar - Desktop Only */}
       <div
-        className={`hidden md:flex justify-center items-center bg-gray-100 space-x-6 text-sm overflow-hidden transition-all duration-300 ${
-          showSecondNav ? "h-12" : "h-0"
+        className={`hidden md:flex justify-center items-center bg-gray-100 border-t border-gray-200 transition-all duration-300 ease-in-out transform ${
+          showSecondNav
+            ? "h-12 opacity-100 translate-y-0"
+            : "h-0 opacity-0 -translate-y-2"
         }`}
       >
-        {navLinks.map(({ label, href }) => (
-          <a key={label} href={href} className="hover:text-red-500">
-            {label}
-          </a>
-        ))}
+        <div className="flex space-x-8 text-sm">
+          {navLinks.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              className="hover:text-red-500 transition-colors duration-200 font-medium"
+            >
+              {label}
+            </a>
+          ))}
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden bg-white shadow-md px-4 pt-2 pb-4"
+          className="md:hidden bg-white shadow-md px-4 pt-2 pb-4 border-t border-gray-200"
         >
           {navLinks.map(({ label, href }) => (
-            <a key={label} href={href} className="block py-2">
+            <a
+              key={label}
+              href={href}
+              className="block py-2 hover:text-red-500 transition-colors duration-200"
+            >
               {label}
             </a>
           ))}

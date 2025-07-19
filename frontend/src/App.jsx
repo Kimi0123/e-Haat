@@ -2,31 +2,78 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./public/Login";
 import Signup from "./public/Signup";
 import Homepage from "./public/Homepage";
-import Aboutus from "./public/Aboutus";
+import AboutUs from "./public/AboutUs";
 import Categories from "./private/Categories";
 import Deals from "./private/Deals";
 import Contact from "./public/Contact";
-import Changepw from "./public/Changepw";
+import ChangePw from "./public/ChangePw";
 
-import Cartpage from "./private/Cartpage";
+import CartPage from "./private/CartPage";
 import Billing from "./private/Billing";
 import UserDashboard from "./private/Dashboard";
-import Orderhistory from "./private/Orderhistory";
-import Ordertracking from "./private/Ordertracking";
+import OrderHistory from "./private/OrderHistory";
+import OrderTracking from "./private/OrderTracking";
 import Settings from "./private/Settings";
 import Help from "./private/Help";
-import Homepage_after from "./private/Homepage_after";
+import HomepageAfter from "./private/HomepageAfter";
 import Navbar from "./components/Navbar";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
 
 // EhaatLanding is the same as Homepage_after
-const EhaatLanding = Homepage_after;
+const EhaatLanding = HomepageAfter;
 
 function App() {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [showSecondNav, setShowSecondNav] = useState(false);
+  const [showSecondNav, setShowSecondNav] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const { isLoggedIn } = useAuth();
+
+  // Optimized scroll handler with throttling
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+
+    // Only show second nav on desktop (md and up)
+    if (window.innerWidth < 768) {
+      setShowSecondNav(false);
+      return;
+    }
+
+    // Show navbar when scrolling up, hide when scrolling down
+    if (currentScrollY < lastScrollY) {
+      // Scrolling up
+      setShowSecondNav(true);
+    } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      // Scrolling down and not at the very top
+      setShowSecondNav(false);
+    }
+
+    setLastScrollY(currentScrollY);
+  }, [lastScrollY]);
+
+  useEffect(() => {
+    // Throttled scroll listener for better performance
+    let ticking = false;
+
+    const throttledScrollHandler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", throttledScrollHandler, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", throttledScrollHandler);
+    };
+  }, [handleScroll]);
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar
@@ -37,25 +84,25 @@ function App() {
       />
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Homepage_after />} />
+        <Route path="/" element={<HomepageAfter />} />
         {/* ✅ Make this your main home */}
         <Route path="/home" element={<Homepage />} />
         {/* <Route path="/e_" element={<Homepage_after />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/cart" element={<Cartpage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/billing" element={<Billing />} />
-        <Route path="/about" element={<Aboutus />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/deals" element={<Deals />} /> {/* ✅ Deals route */}
         <Route path="/landing" element={<EhaatLanding />} />
         <Route path="/contact" element={<Contact />} />
         {/* Dashboard Routes */}
         <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/dashboard/order" element={<Orderhistory />} />
-        <Route path="/dashboard/tracking" element={<Ordertracking />} />
+        <Route path="/dashboard/order" element={<OrderHistory />} />
+        <Route path="/dashboard/tracking" element={<OrderTracking />} />
         <Route path="/dashboard/settings" element={<Settings />} />
-        <Route path="/dashboard/changepw" element={<Changepw />} />
+        <Route path="/dashboard/changepw" element={<ChangePw />} />
         <Route path="/dashboard/help" element={<Help />} />
       </Routes>
     </div>
