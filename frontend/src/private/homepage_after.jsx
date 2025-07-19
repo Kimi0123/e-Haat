@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Hero from "../components/Hero";
+import { useAuth } from "../AuthContext";
 
 const EhaatLanding = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState({});
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [showSecondNav, setShowSecondNav] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -168,7 +171,7 @@ const EhaatLanding = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      {/* Navbar removed, now global */}
 
       {/* Scroll Indicator */}
       <div

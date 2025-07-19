@@ -6,6 +6,7 @@ import { auth, provider } from "../firebase.js";
 import { signInWithPopup } from "firebase/auth";
 import BASE_URL from "../utils/api.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +21,7 @@ function Signup() {
     agree: false,
   });
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

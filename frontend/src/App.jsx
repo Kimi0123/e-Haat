@@ -16,16 +16,28 @@ import Ordertracking from "./private/Ordertracking";
 import Settings from "./private/Settings";
 import Help from "./private/Help";
 import Homepage_after from "./private/Homepage_after";
+import Navbar from "./components/Navbar";
+import { useState } from "react";
+import { useAuth } from "./AuthContext";
 
 // EhaatLanding is the same as Homepage_after
 const EhaatLanding = Homepage_after;
 
 function App() {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [showSecondNav, setShowSecondNav] = useState(false);
+  const { isLoggedIn } = useAuth();
   return (
     <div className="min-h-screen bg-white">
+      <Navbar
+        showSecondNav={showSecondNav}
+        isMenuOpen={isMenuOpen}
+        setMenuOpen={setMenuOpen}
+        isLoggedIn={isLoggedIn}
+      />
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Homepage_after />} />{" "}
+        <Route path="/" element={<Homepage_after />} />
         {/* ✅ Make this your main home */}
         <Route path="/home" element={<Homepage />} />
         {/* <Route path="/e_" element={<Homepage_after />} /> */}

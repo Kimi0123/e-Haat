@@ -1,12 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function AboutUs() {
   return (
     <>
-      <Navbar />
+      {/* Navbar removed, now global */}
       <main className="max-w-7xl mx-auto px-6 pt-[140px] pb-20 text-gray-900">
         {/* Hero Section */}
         <motion.section

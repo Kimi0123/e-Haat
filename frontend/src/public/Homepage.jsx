@@ -12,7 +12,6 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Homepage_after() {
@@ -145,8 +144,6 @@ export default function Homepage_after() {
 
   return (
     <>
-      <Navbar />
-
       {/* Sidebar + Banner */}
       <div className="flex px-10 py-6 gap-6 bg-gray-50">
         {/* Sidebar */}

@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 const deals = [
   {
@@ -43,7 +41,7 @@ const deals = [
 export default function Deals() {
   return (
     <>
-      <Navbar />
+    
 
       <main className="px-6 sm:px-10 pt-[140px] pb-16 bg-gray-50 min-h-screen">
         <h1 className="text-4xl font-bold mb-10 text-red-600 text-center">
@@ -86,7 +84,6 @@ export default function Deals() {
         </div>
       </main>
 
-      <Footer />
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +11,7 @@ function Login() {
     password: "",
   });
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -44,6 +46,7 @@ function Login() {
 
       // Store token in localStorage for future authenticated requests
       localStorage.setItem("token", data.token);
+      setIsLoggedIn(true);
 
       alert("Login successful");
       console.log(data);

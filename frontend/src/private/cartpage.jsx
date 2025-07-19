@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export default function Cart() {
   const [quantity, setQuantity] = useState(1);
@@ -16,7 +14,7 @@ export default function Cart() {
 
   return (
     <>
-      <Navbar />
+
 
       <div className="px-6 pt-[140px] pb-10 bg-white text-black max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-8">🛒 Cart</h2>
@@ -105,8 +103,6 @@ export default function Cart() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }

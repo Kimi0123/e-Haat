@@ -12,8 +12,7 @@ import {
   FaChild,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
 
 const categories = [
   { icon: <FaMobileAlt />, label: "Smartphones" },

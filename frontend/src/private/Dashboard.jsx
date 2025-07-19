@@ -8,7 +8,6 @@ import {
   FaQuestionCircle,
   FaSignOutAlt,
 } from "react-icons/fa";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Dashboard() {
@@ -16,8 +15,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen flex flex-col text-black bg-white">
-      {/* Navbar */}
-      <Navbar />
+      {/* Navbar removed, now global */}
 
       {/* Content wrapper with padding to avoid overlap */}
       <div className="flex flex-1 w-full pt-16">

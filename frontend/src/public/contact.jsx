@@ -1,11 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const Contact = () => {
   return (
     <div className="min-h-screen bg-white text-black">
-      <Navbar />
+      {/* Navbar removed, now global */}
 
       {/* Top Padding adjusted for navbar */}
       <div className="pt-[140px] px-6 max-w-6xl mx-auto">

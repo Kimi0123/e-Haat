@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function BillingPage() {
@@ -32,7 +31,7 @@ export default function BillingPage() {
 
   return (
     <>
-      <Navbar />
+      {/* Navbar removed, now global */}
 
       <div className="max-w-6xl mx-auto p-6 pt-20 bg-white text-black">
         <h2 className="text-3xl font-bold mb-10">Billing Details</h2>
