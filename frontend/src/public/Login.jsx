@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +9,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -46,6 +47,8 @@ function Login() {
 
       alert("Login successful");
       console.log(data);
+      // Navigate to homepage with all features
+      navigate("/");
     } catch (error) {
       console.error("Login Error:", error);
       alert("Something went wrong!");

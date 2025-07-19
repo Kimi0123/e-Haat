@@ -35,8 +35,18 @@ const EhaatLanding = () => {
   }, []);
 
   const categories = [
-    "Electronics", "Clothing", "Beauty", "Home", "Furniture", "Toys",
-    "Groceries", "Accessories", "Footwear", "Kitchen", "Stationery", "Handicrafts"
+    "Electronics",
+    "Clothing",
+    "Beauty",
+    "Home",
+    "Furniture",
+    "Toys",
+    "Groceries",
+    "Accessories",
+    "Footwear",
+    "Kitchen",
+    "Stationery",
+    "Handicrafts",
   ];
 
   const flashSale = [
@@ -45,28 +55,28 @@ const EhaatLanding = () => {
       price: "Rs. 104,100",
       original: "Rs. 124,100",
       discount: "16%",
-      image: "/iphone.png"
+      image: "/iphone.png",
     },
     {
       title: "Men's Casual Shirt - Linen",
       price: "Rs. 1,600",
       original: "Rs. 2,000",
       discount: "20%",
-      image: "/menshirt.png"
+      image: "/menshirt.png",
     },
     {
       title: "Floral Long Dress - Backless",
       price: "Rs. 2,125",
       original: "Rs. 2,500",
       discount: "15%",
-      image: "/dress.png"
+      image: "/dress.png",
     },
     {
       title: "Cordless Beard Trimmer - USB",
       price: "Rs. 1,800",
       original: "Rs. 2,200",
       discount: "18%",
-      image: "/trimmer.png"
+      image: "/trimmer.png",
     },
   ];
 
@@ -134,10 +144,26 @@ const EhaatLanding = () => {
   ];
 
   const features = [
-    { icon: "🚚", title: "Fast Delivery", description: "Delivery across Nepal in 2–4 days." },
-    { icon: "💳", title: "Secure Payments", description: "Pay with Khalti, eSewa, COD." },
-    { icon: "📦", title: "Wide Range", description: "From groceries to gadgets in one place." },
-    { icon: "🛠️", title: "Local Support", description: "Support local Nepali sellers." }
+    {
+      icon: "🚚",
+      title: "Fast Delivery",
+      description: "Delivery across Nepal in 2–4 days.",
+    },
+    {
+      icon: "💳",
+      title: "Secure Payments",
+      description: "Pay with Khalti, eSewa, COD.",
+    },
+    {
+      icon: "📦",
+      title: "Wide Range",
+      description: "From groceries to gadgets in one place.",
+    },
+    {
+      icon: "🛠️",
+      title: "Local Support",
+      description: "Support local Nepali sellers.",
+    },
   ];
 
   return (
@@ -148,7 +174,11 @@ const EhaatLanding = () => {
       <div
         className="scroll-indicator bg-red-600 h-1 fixed top-0 left-0 z-40"
         style={{
-          width: `${(scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%`,
+          width: `${
+            (scrollY /
+              (document.documentElement.scrollHeight - window.innerHeight)) *
+            100
+          }%`,
         }}
       ></div>
 
@@ -159,18 +189,33 @@ const EhaatLanding = () => {
         {/* Flash Sale */}
         <section className="py-16 bg-white" data-animate>
           <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-red-800 mb-6">⚡ Flash Sale</h2>
+            <h2 className="text-3xl font-bold text-red-800 mb-6">
+              ⚡ Flash Sale
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {flashSale.map((item, i) => (
-                <div key={i} className="border rounded-xl shadow hover:shadow-lg p-4 transition-transform hover:-translate-y-1">
-                  <img src={item.image} alt={item.title} className="w-full h-40 object-cover rounded" />
+                <div
+                  key={i}
+                  className="border rounded-xl shadow hover:shadow-lg p-4 transition-transform hover:-translate-y-1"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-40 object-cover rounded"
+                  />
                   <p className="mt-3 font-semibold text-black">{item.title}</p>
-                  <span className="badge badge-error mt-2">-{item.discount}</span>
+                  <span className="badge badge-error mt-2">
+                    -{item.discount}
+                  </span>
                   <div className="flex items-center gap-2 mt-2">
                     <p className="font-bold text-red-600">{item.price}</p>
-                    <p className="line-through text-sm text-gray-500">{item.original}</p>
+                    <p className="line-through text-sm text-gray-500">
+                      {item.original}
+                    </p>
                   </div>
-                  <button className="btn bg-red-600 hover:bg-red-700 text-white btn-sm w-full mt-3">Add to Cart</button>
+                  <button className="btn bg-red-600 hover:bg-red-700 text-white btn-sm w-full mt-3">
+                    Add to Cart
+                  </button>
                 </div>
               ))}
             </div>
@@ -180,14 +225,25 @@ const EhaatLanding = () => {
         {/* Just For You */}
         <section className="py-16 bg-red-50" data-animate>
           <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-red-800 mb-6">🎯 Just For You</h2>
+            <h2 className="text-3xl font-bold text-red-800 mb-6">
+              🎯 Just For You
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
               {justForYou.map((item, i) => (
-                <div key={i} className="border rounded-xl shadow p-4 hover:shadow-md transition-transform hover:-translate-y-1 bg-white">
-                  <img src={item.image} alt={item.title} className="w-full h-40 object-cover rounded mb-2" />
+                <div
+                  key={i}
+                  className="border rounded-xl shadow p-4 hover:shadow-md transition-transform hover:-translate-y-1 bg-white"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-40 object-cover rounded mb-2"
+                  />
                   <p className="text-sm font-medium text-black">{item.title}</p>
                   <p className="text-red-600 font-bold mt-1">{item.price}</p>
-                  <button className="btn bg-red-600 hover:bg-red-700 text-white btn-sm w-full mt-3">Add to Cart</button>
+                  <button className="btn bg-red-600 hover:bg-red-700 text-white btn-sm w-full mt-3">
+                    Add to Cart
+                  </button>
                 </div>
               ))}
             </div>
@@ -197,12 +253,19 @@ const EhaatLanding = () => {
         {/* Features */}
         <section className="py-20 bg-white" data-animate>
           <div className="max-w-7xl mx-auto px-4 text-center">
-            <h2 className="text-4xl font-bold text-red-800 mb-12">Why Shop With e-Haat?</h2>
+            <h2 className="text-4xl font-bold text-red-800 mb-12">
+              Why Shop With e-Haat?
+            </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((f, i) => (
-                <div key={i} className="bg-red-50 p-6 rounded-xl shadow hover:shadow-md transition-transform hover:-translate-y-1">
+                <div
+                  key={i}
+                  className="bg-red-50 p-6 rounded-xl shadow hover:shadow-md transition-transform hover:-translate-y-1"
+                >
                   <div className="text-4xl mb-3">{f.icon}</div>
-                  <h3 className="text-xl font-semibold mb-2 text-red-700">{f.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-red-700">
+                    {f.title}
+                  </h3>
                   <p className="text-gray-700 text-sm">{f.description}</p>
                 </div>
               ))}
@@ -211,12 +274,21 @@ const EhaatLanding = () => {
         </section>
 
         {/* Categories */}
-        <section id="categories-section" className="py-20 bg-white" data-animate>
+        <section
+          id="categories-section"
+          className="py-20 bg-white"
+          data-animate
+        >
           <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-4xl font-bold text-red-800 text-center mb-12">Shop by Category</h2>
+            <h2 className="text-4xl font-bold text-red-800 text-center mb-12">
+              Shop by Category
+            </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {categories.map((cat, i) => (
-                <div key={i} className="border rounded-lg p-4 text-center hover:shadow transition-transform hover:scale-105 cursor-pointer text-black">
+                <div
+                  key={i}
+                  className="border rounded-lg p-4 text-center hover:shadow transition-transform hover:scale-105 cursor-pointer text-black"
+                >
                   <span className="text-lg font-medium">{cat}</span>
                 </div>
               ))}
@@ -227,20 +299,46 @@ const EhaatLanding = () => {
         {/* Stats */}
         <section className="py-20 bg-red-600 text-white" data-animate>
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div><h3 className="text-4xl font-bold">25,000+</h3><p>Orders Delivered</p></div>
-            <div><h3 className="text-4xl font-bold">15,000+</h3><p>Happy Customers</p></div>
-            <div><h3 className="text-4xl font-bold">500+</h3><p>Sellers Onboard</p></div>
-            <div><h3 className="text-4xl font-bold">24/7</h3><p>Support Available</p></div>
+            <div>
+              <h3 className="text-4xl font-bold">25,000+</h3>
+              <p>Orders Delivered</p>
+            </div>
+            <div>
+              <h3 className="text-4xl font-bold">15,000+</h3>
+              <p>Happy Customers</p>
+            </div>
+            <div>
+              <h3 className="text-4xl font-bold">500+</h3>
+              <p>Sellers Onboard</p>
+            </div>
+            <div>
+              <h3 className="text-4xl font-bold">24/7</h3>
+              <p>Support Available</p>
+            </div>
           </div>
         </section>
 
         {/* CTA */}
         <section className="py-20 bg-white text-center">
-          <h2 className="text-4xl font-bold text-red-800 mb-4">Join the e-Haat Family</h2>
-          <p className="text-lg mb-6 text-gray-700">Start your seamless online shopping journey now.</p>
+          <h2 className="text-4xl font-bold text-red-800 mb-4">
+            Join the e-Haat Family
+          </h2>
+          <p className="text-lg mb-6 text-gray-700">
+            Start your seamless online shopping journey now.
+          </p>
           <div className="flex justify-center gap-4">
-            <Link to="/signup" className="btn bg-red-600 text-white hover:bg-red-700">Create Account</Link>
-            <Link to="/login" className="btn btn-outline border-red-600 text-red-600 hover:bg-red-600 hover:text-white">Login</Link>
+            <Link
+              to="/signup"
+              className="btn bg-red-600 text-white hover:bg-red-700"
+            >
+              Create Account
+            </Link>
+            <Link
+              to="/login"
+              className="btn btn-outline border-red-600 text-red-600 hover:bg-red-600 hover:text-white"
+            >
+              Login
+            </Link>
           </div>
         </section>
       </div>

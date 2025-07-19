@@ -9,7 +9,9 @@ const Contact = () => {
 
       {/* Top Padding adjusted for navbar */}
       <div className="pt-[140px] px-6 max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-red-700 mb-10 text-center">📞 Contact e-Haat</h1>
+        <h1 className="text-4xl font-bold text-red-700 mb-10 text-center">
+          📞 Contact e-Haat
+        </h1>
 
         {/* Contact Info + Form */}
         <div className="grid md:grid-cols-2 gap-10">
@@ -31,7 +33,9 @@ const Contact = () => {
 
           {/* Contact Form */}
           <form className="bg-red-50 p-8 rounded-xl shadow space-y-6">
-            <h2 className="text-2xl font-bold text-red-700">Send Us a Message</h2>
+            <h2 className="text-2xl font-bold text-red-700">
+              Send Us a Message
+            </h2>
             <div>
               <label className="block mb-1 font-medium">Your Name</label>
               <input

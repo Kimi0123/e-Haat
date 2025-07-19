@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const authRouter = require("../routes/auth");
+
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -5,6 +8,13 @@ function authenticateJWT(req, res, next) {
   }
 
   const token = authHeader.split(" ")[1];
+
+  // Check if token is blacklisted
+  if (authRouter.blacklistedTokens && authRouter.blacklistedTokens.has(token)) {
+    return res
+      .status(401)
+      .json({ message: "Token is blacklisted. Please login again." });
+  }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

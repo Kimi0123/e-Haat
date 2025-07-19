@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import {
-  FaMobileAlt, FaShoppingBag, FaTshirt, FaGlasses, FaCoffee,
-  FaLaptop, FaBlender, FaCartPlus, FaChild,
+  FaMobileAlt,
+  FaShoppingBag,
+  FaTshirt,
+  FaGlasses,
+  FaCoffee,
+  FaLaptop,
+  FaBlender,
+  FaCartPlus,
+  FaChild,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -138,7 +145,7 @@ export default function Homepage_after() {
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
 
       {/* Sidebar + Banner */}
       <div className="flex px-10 py-6 gap-6 bg-gray-50">
@@ -189,16 +196,35 @@ export default function Homepage_after() {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center px-10 text-white">
-              <motion.p className="text-4xl font-black" initial={{ y: -20 }} animate={{ y: 0 }}>
+              <motion.p
+                className="text-4xl font-black"
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+              >
                 Best Place
               </motion.p>
-              <motion.p className="text-2xl italic" initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }}>
+              <motion.p
+                className="text-2xl italic"
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
                 To Find
               </motion.p>
-              <motion.p className="text-5xl font-extrabold mt-1" initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.4 }}>
+              <motion.p
+                className="text-5xl font-extrabold mt-1"
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
                 What You Are
               </motion.p>
-              <motion.p className="text-2xl italic" initial={{ y: -20 }} animate={{ y: 0 }} transition={{ delay: 0.6 }}>
+              <motion.p
+                className="text-2xl italic"
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
                 Looking For
               </motion.p>
               <motion.button
@@ -224,12 +250,20 @@ export default function Homepage_after() {
               className="w-[250px] h-[390px] bg-white border shadow-sm rounded p-4 text-black flex-shrink-0 hover:shadow-lg flex flex-col justify-between"
               whileHover={{ scale: 1.05 }}
             >
-              <img src={item.img} alt={item.title} className="w-full h-40 object-cover mb-2 rounded" />
+              <img
+                src={item.img}
+                alt={item.title}
+                className="w-full h-40 object-cover mb-2 rounded"
+              />
               <p className="text-sm font-medium line-clamp-2">{item.title}</p>
-              <span className="badge badge-error text-white mt-2 w-fit">-{item.discount} off</span>
+              <span className="badge badge-error text-white mt-2 w-fit">
+                -{item.discount} off
+              </span>
               <div className="mt-1">
                 <p className="text-lg font-bold">{item.price}</p>
-                <p className="text-sm line-through text-gray-500">{item.original}</p>
+                <p className="text-sm line-through text-gray-500">
+                  {item.original}
+                </p>
               </div>
               <button
                 onClick={() => addToCart(item)}
@@ -257,8 +291,12 @@ export default function Homepage_after() {
                 alt={item.title}
                 className="w-full h-44 object-cover rounded mb-2"
               />
-              <p className="text-sm font-medium flex-grow line-clamp-2">{item.title}</p>
-              <p className="text-red-600 font-bold text-base mt-2">{item.price}</p>
+              <p className="text-sm font-medium flex-grow line-clamp-2">
+                {item.title}
+              </p>
+              <p className="text-red-600 font-bold text-base mt-2">
+                {item.price}
+              </p>
               <button
                 onClick={() => addToCart(item)}
                 className="btn mt-4 bg-red-600 hover:bg-red-700 text-white btn-sm w-full"

@@ -79,14 +79,18 @@ export default function Dashboard() {
               <div>
                 <p className="font-medium">
                   Email Address:
-                  <span className="text-red-600 cursor-pointer ml-1">Change</span>
+                  <span className="text-red-600 cursor-pointer ml-1">
+                    Change
+                  </span>
                 </p>
                 <p>sushmita@gmail.com</p>
               </div>
               <div>
                 <p className="font-medium">
                   Mobile No. 9834567
-                  <span className="text-red-600 cursor-pointer ml-1">Change</span>
+                  <span className="text-red-600 cursor-pointer ml-1">
+                    Change
+                  </span>
                 </p>
                 <p>Please add your mobile number</p>
               </div>

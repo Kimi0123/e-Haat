@@ -1,29 +1,31 @@
 // Signup.jsx
-import { useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
-import { auth, provider } from '../firebase.js';
-import { signInWithPopup } from 'firebase/auth';
-import BASE_URL from '../utils/api.js';
+import { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
+import { auth, provider } from "../firebase.js";
+import { signInWithPopup } from "firebase/auth";
+import BASE_URL from "../utils/api.js";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    agree: false
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    agree: false,
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -42,9 +44,9 @@ function Signup() {
 
     try {
       const res = await fetch(`${BASE_URL}/auth/signup`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           firstName: form.firstName,
@@ -59,9 +61,11 @@ function Signup() {
 
       if (res.ok) {
         alert(data.message || "Signup successful");
-        console.log('✅ Server Response:', data);
+        console.log("✅ Server Response:", data);
+        // Navigate to login page after successful signup
+        navigate("/login");
       } else {
-        alert(data.message || 'Signup failed');
+        alert(data.message || "Signup failed");
       }
     } catch (err) {
       console.error("❌ Error submitting form:", err);
@@ -73,17 +77,19 @@ function Signup() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log('✅ Google SignUp Successful:', user);
+      console.log("✅ Google SignUp Successful:", user);
       // You can send this to backend too if needed
     } catch (error) {
-      console.error('❌ Google Sign-Up Error:', error);
+      console.error("❌ Google Sign-Up Error:", error);
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-base-200">
       <div className="card w-full max-w-lg bg-base-100 shadow-xl p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center">Create an Account</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Create an Account
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <input
@@ -130,7 +136,7 @@ function Signup() {
 
           <div className="relative mb-4">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
               className="input input-bordered w-full pr-10"
@@ -148,7 +154,7 @@ function Signup() {
 
           <div className="relative mb-4">
             <input
-              type={showConfirm ? 'text' : 'password'}
+              type={showConfirm ? "text" : "password"}
               name="confirmPassword"
               placeholder="Confirm Password"
               className="input input-bordered w-full pr-10"
@@ -174,7 +180,9 @@ function Signup() {
                 className="checkbox checkbox-primary"
                 required
               />
-              <span className="label-text">I agree to the Terms and Conditions</span>
+              <span className="label-text">
+                I agree to the Terms and Conditions
+              </span>
             </label>
           </div>
 
@@ -194,7 +202,7 @@ function Signup() {
           </button>
 
           <p className="mt-4 text-center">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <a href="/login" className="text-primary font-semibold">
               Login
             </a>

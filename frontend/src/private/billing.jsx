@@ -32,8 +32,7 @@ export default function BillingPage() {
 
   return (
     <>
-        <Navbar/>
-     
+      <Navbar />
 
       <div className="max-w-6xl mx-auto p-6 pt-20 bg-white text-black">
         <h2 className="text-3xl font-bold mb-10">Billing Details</h2>

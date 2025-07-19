@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const categories = [
   { icon: <FaMobileAlt />, label: "Smartphones" },
@@ -36,7 +37,6 @@ export default function Categories() {
   };
 
   return (
-    
     <main className="max-w-7xl mx-auto px-6 py-16 text-gray-900">
       <h1 className="text-4xl font-extrabold mb-12 text-center text-red-600">
         Shop by Categories
@@ -53,7 +53,9 @@ export default function Categories() {
             onKeyDown={(e) => e.key === "Enter" && handleCategoryClick(label)}
           >
             <div className="text-black text-5xl mb-4">{icon}</div>
-            <p className="text-lg font-semibold text-center text-gray-800">{label}</p>
+            <p className="text-lg font-semibold text-center text-gray-800">
+              {label}
+            </p>
           </div>
         ))}
       </div>

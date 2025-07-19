@@ -1,53 +1,50 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Homepage from "./pages/Homepage";
-import Cart from "./pages/cartpage";
-import BillingPage from "./pages/billing";
-import AboutUs from "./pages/aboutus";
-import Categories from "./pages/categories";
-import Deals from "./pages/deals"; // ✅ Import Deals page
+import Login from "./public/Login";
+import Signup from "./public/Signup";
+import Homepage from "./public/Homepage";
+import Aboutus from "./public/Aboutus";
+import Categories from "./private/Categories";
+import Deals from "./private/Deals";
+import Contact from "./public/Contact";
+import Changepw from "./public/Changepw";
 
-// Dashboard related
-import UserDashboard from "./pages/Dashboard";
-import OrderHistory from "./pages/orderhistory";
-import OrderTracking from "./pages/ordertracking";
-import Settings from "./pages/settings";
-import ChangePassword from "./pages/changepw";
-import Help from "./pages/help";
+import Cartpage from "./private/Cartpage";
+import Billing from "./private/Billing";
+import UserDashboard from "./private/Dashboard";
+import Orderhistory from "./private/Orderhistory";
+import Ordertracking from "./private/Ordertracking";
+import Settings from "./private/Settings";
+import Help from "./private/Help";
+import Homepage_after from "./private/Homepage_after";
 
-import Homepage_after from "./pages/homepage_after";
-import EhaatLanding from "./pages/homepage_after";
-import Contact from "./pages/contact";
+// EhaatLanding is the same as Homepage_after
+const EhaatLanding = Homepage_after;
 
 function App() {
   return (
     <div className="min-h-screen bg-white">
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Homepage_after />} /> {/* ✅ Make this your main home */}
+        <Route path="/" element={<Homepage_after />} />{" "}
+        {/* ✅ Make this your main home */}
         <Route path="/home" element={<Homepage />} />
         {/* <Route path="/e_" element={<Homepage_after />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/billing" element={<BillingPage />} />
-        <Route path="/about" element={<AboutUs />} />
+        <Route path="/cart" element={<Cartpage />} />
+        <Route path="/billing" element={<Billing />} />
+        <Route path="/about" element={<Aboutus />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/deals" element={<Deals />} /> {/* ✅ Deals route */}
         <Route path="/landing" element={<EhaatLanding />} />
         <Route path="/contact" element={<Contact />} />
-
-
         {/* Dashboard Routes */}
         <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/dashboard/order" element={<OrderHistory />} />
-        <Route path="/dashboard/tracking" element={<OrderTracking />} />
+        <Route path="/dashboard/order" element={<Orderhistory />} />
+        <Route path="/dashboard/tracking" element={<Ordertracking />} />
         <Route path="/dashboard/settings" element={<Settings />} />
-        <Route path="/dashboard/changepw" element={<ChangePassword />} />
+        <Route path="/dashboard/changepw" element={<Changepw />} />
         <Route path="/dashboard/help" element={<Help />} />
-
-
       </Routes>
     </div>
   );

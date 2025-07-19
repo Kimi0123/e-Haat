@@ -6,8 +6,17 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
+// In-memory token blacklist for access tokens
+const blacklistedTokens = new Set();
+
 function generateToken(user) {
-  return jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+  // Set token to expire in 1 hour
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+}
+
+function generateRefreshToken(user) {
+  // Set refresh token to expire in 7 days
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 }
 
 // ----------------------- SIGNUP -----------------------
@@ -59,12 +68,14 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Generate 6-digit numeric token
+    // Generate access and refresh tokens
     const token = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
 
     res.json({
       message: "Login successful",
       token,
+      refreshToken,
       user: {
         id: user.id,
         firstName: user.firstName,
@@ -75,6 +86,26 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.error("Login Error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// ----------------------- REFRESH TOKEN ENDPOINT -----------------------
+
+router.post("/refresh", (req, res) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(401).json({ message: "No refresh token provided" });
+  }
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    const newToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res.json({ token: newToken });
+  } catch (err) {
+    return res
+      .status(403)
+      .json({ message: "Invalid or expired refresh token" });
   }
 });
 
@@ -112,12 +143,15 @@ router.get("/profile", authenticateJWT, async (req, res) => {
 router.post("/logout", authenticateJWT, async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
-    activeTokens.delete(token);
+    blacklistedTokens.add(token); // Blacklist the access token
     res.json({ message: "Logged out successfully" });
   } catch (err) {
     console.error("Logout Error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// Export the blacklist for use in middleware
+router.blacklistedTokens = blacklistedTokens;
 
 module.exports = router;

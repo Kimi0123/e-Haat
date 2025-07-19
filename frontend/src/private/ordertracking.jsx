@@ -66,7 +66,9 @@ export default function OrderTracking() {
               ))}
             </ul>
           ) : trackingData && trackingData.length === 0 ? (
-            <p className="text-red-600 font-semibold">No tracking info found for this ID.</p>
+            <p className="text-red-600 font-semibold">
+              No tracking info found for this ID.
+            </p>
           ) : null}
         </div>
       </main>

@@ -37,13 +37,15 @@ export default function AboutUs() {
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl font-semibold mb-6 text-red-600">Our Story</h2>
+            <h2 className="text-4xl font-semibold mb-6 text-red-600">
+              Our Story
+            </h2>
             <p className="text-gray-700 leading-relaxed text-lg">
               Founded in 2024, E-Haat started with a simple mission: to empower
-              local businesses and bring quality products right to your doorstep.
-              We believe shopping should be seamless, enjoyable, and supportive
-              of communities. Our curated marketplace ensures every item meets
-              strict quality standards and offers great value.
+              local businesses and bring quality products right to your
+              doorstep. We believe shopping should be seamless, enjoyable, and
+              supportive of communities. Our curated marketplace ensures every
+              item meets strict quality standards and offers great value.
             </p>
           </motion.div>
           <motion.div
@@ -120,7 +122,9 @@ export default function AboutUs() {
                   {val.icon}
                 </svg>
                 <h3 className="text-2xl font-semibold mb-4">{val.title}</h3>
-                <p className="text-gray-600 text-lg leading-relaxed">{val.desc}</p>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  {val.desc}
+                </p>
               </motion.div>
             ))}
           </div>

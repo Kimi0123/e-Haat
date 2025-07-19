@@ -61,7 +61,9 @@ export default function Deals() {
                 alt={item.title}
                 className="h-48 w-full object-cover rounded mb-4"
               />
-              <p className="font-semibold text-base text-black mb-2">{item.title}</p>
+              <p className="font-semibold text-base text-black mb-2">
+                {item.title}
+              </p>
 
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm bg-red-600 text-white px-2 py-0.5 rounded-full">
@@ -71,7 +73,9 @@ export default function Deals() {
 
               <div className="flex items-center gap-2">
                 <p className="text-lg font-bold text-red-600">{item.price}</p>
-                <p className="line-through text-sm text-gray-500">{item.original}</p>
+                <p className="line-through text-sm text-gray-500">
+                  {item.original}
+                </p>
               </div>
 
               <button className="btn mt-4 bg-red-600 text-white hover:bg-red-700 btn-sm">
