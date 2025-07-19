@@ -9,9 +9,23 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import Footer from "../components/Footer";
+import { useAuth } from "../AuthContext";
+import { useNotification } from "../NotificationContext";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  const { showNotification } = useNotification();
+
+  const handleLogout = () => {
+    logout();
+    showNotification(
+      "info",
+      "Logged Out",
+      "You have been successfully logged out."
+    );
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen flex flex-col text-black bg-white">
@@ -30,7 +44,7 @@ export default function Dashboard() {
             </li>
             <li
               className="flex items-center gap-3 hover:text-red-600 cursor-pointer"
-              onClick={() => navigate("/dashboard/Order")}
+              onClick={() => navigate("/dashboard/order")}
             >
               <FaClock className="w-5 h-5" /> Order History
             </li>
@@ -54,11 +68,8 @@ export default function Dashboard() {
               <FaQuestionCircle className="w-5 h-5" /> Help
             </li>
             <li
-              className="flex items-center gap-3 hover:text-red-600 cursor-pointer"
-              onClick={() => {
-                console.log("Logging out...");
-                navigate("/");
-              }}
+              className="flex items-center gap-3 hover:text-red-600 cursor-pointer transition-colors duration-200"
+              onClick={handleLogout}
             >
               <FaSignOutAlt className="w-5 h-5" /> Logout
             </li>
@@ -104,14 +115,14 @@ export default function Dashboard() {
 
             <div className="flex gap-6 mt-6">
               <button
-                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition-colors duration-200"
                 onClick={() => console.log("Edit Profile clicked")}
               >
                 EDIT PROFILE
               </button>
               <button
-                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
-                onClick={() => navigate("/dashboard/change-password")}
+                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition-colors duration-200"
+                onClick={() => navigate("/dashboard/changepw")}
               >
                 CHANGE PASSWORD
               </button>

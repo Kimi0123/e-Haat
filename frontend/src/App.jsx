@@ -15,13 +15,10 @@ import OrderHistory from "./private/OrderHistory";
 import OrderTracking from "./private/OrderTracking";
 import Settings from "./private/Settings";
 import Help from "./private/Help";
-import HomepageAfter from "./private/HomepageAfter";
 import Navbar from "./components/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
-
-// EhaatLanding is the same as Homepage_after
-const EhaatLanding = HomepageAfter;
 
 function App() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -84,26 +81,95 @@ function App() {
       />
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<HomepageAfter />} />
-        {/* ✅ Make this your main home */}
+        <Route path="/" element={<Homepage />} />
         <Route path="/home" element={<Homepage />} />
-        {/* <Route path="/e_" element={<Homepage_after />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/billing" element={<Billing />} />
         <Route path="/about" element={<AboutUs />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/deals" element={<Deals />} /> {/* ✅ Deals route */}
-        <Route path="/landing" element={<EhaatLanding />} />
         <Route path="/contact" element={<Contact />} />
-        {/* Dashboard Routes */}
-        <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/dashboard/order" element={<OrderHistory />} />
-        <Route path="/dashboard/tracking" element={<OrderTracking />} />
-        <Route path="/dashboard/settings" element={<Settings />} />
-        <Route path="/dashboard/changepw" element={<ChangePw />} />
-        <Route path="/dashboard/help" element={<Help />} />
+        <Route path="/landing" element={<Homepage />} />
+
+        {/* Private Routes */}
+        <Route
+          path="/cart"
+          element={
+            <PrivateRoute>
+              <CartPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/billing"
+          element={
+            <PrivateRoute>
+              <Billing />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/categories"
+          element={
+            <PrivateRoute>
+              <Categories />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/deals"
+          element={
+            <PrivateRoute>
+              <Deals />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <UserDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/order"
+          element={
+            <PrivateRoute>
+              <OrderHistory />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/tracking"
+          element={
+            <PrivateRoute>
+              <OrderTracking />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/settings"
+          element={
+            <PrivateRoute>
+              <Settings />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/changepw"
+          element={
+            <PrivateRoute>
+              <ChangePw />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/help"
+          element={
+            <PrivateRoute>
+              <Help />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );

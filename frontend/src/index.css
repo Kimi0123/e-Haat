@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* Ensure content doesn't get hidden behind fixed navbar */
+body {
+    padding-top: 128px; /* 80 (main nav) + 48 (second nav) */
+  }
+  
 
 /* Smooth scrolling for better UX */
 html {
