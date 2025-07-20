@@ -11,6 +11,9 @@ router.get("/featured", productController.getFeaturedProducts);
 // Search products (must come before /:id route)
 router.get("/search", productController.searchProducts);
 
+// Get all unique categories
+router.get("/categories", productController.getCategories);
+
 // Get product by ID (must come after /search route)
 router.get("/:id", productController.getProductById);
 

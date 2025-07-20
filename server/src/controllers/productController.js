@@ -28,6 +28,58 @@ exports.searchProducts = async (req, res) => {
   try {
     const { q, sort, price, category } = req.query;
 
+    // If only category is provided, search by category
+    if ((!q || q.trim() === "") && category && category !== "all") {
+      // Build search conditions for category only
+      const searchConditions = {
+        category: { [Op.iLike]: `%${category}%` },
+        isActive: true,
+      };
+      // Add price filter
+      if (price && price !== "all") {
+        switch (price) {
+          case "under-1000":
+            searchConditions.price = { [Op.lt]: 1000 };
+            break;
+          case "1000-5000":
+            searchConditions.price = { [Op.between]: [1000, 4999] };
+            break;
+          case "5000-10000":
+            searchConditions.price = { [Op.between]: [5000, 9999] };
+            break;
+          case "over-10000":
+            searchConditions.price = { [Op.gte]: 10000 };
+            break;
+        }
+      }
+      // Build order clause
+      let orderClause = [];
+      switch (sort) {
+        case "price-low":
+          orderClause.push(["price", "ASC"]);
+          break;
+        case "price-high":
+          orderClause.push(["price", "DESC"]);
+          break;
+        case "rating":
+          orderClause.push(["rating", "DESC"]);
+          break;
+        case "newest":
+          orderClause.push(["createdAt", "DESC"]);
+          break;
+        default:
+          orderClause.push(["name", "ASC"]);
+          break;
+      }
+      const products = await Product.findAll({
+        where: searchConditions,
+        order: orderClause,
+        limit: 50,
+      });
+      return res.json({ products, total: products.length });
+    }
+
+    // Existing search logic
     if (!q || q.trim() === "") {
       return res.json({ products: [] });
     }
@@ -117,5 +169,24 @@ exports.getProductById = async (req, res) => {
     res.json(productWithReviews);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get all unique categories
+exports.getCategories = async (req, res) => {
+  try {
+    const products = await Product.findAll({ attributes: ["category"] });
+    const categoryCounts = {};
+    products.forEach((p) => {
+      if (p.category) {
+        categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
+      }
+    });
+    const categories = Object.entries(categoryCounts).map(
+      ([label, productCount]) => ({ label, productCount })
+    );
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch categories" });
   }
 };

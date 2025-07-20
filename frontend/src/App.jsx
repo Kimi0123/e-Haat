@@ -34,6 +34,7 @@ import AdminSettings from "./private/admin_pages/settings";
 import AddProduct from "./private/admin_pages/add_product";
 import EditProduct from "./private/admin_pages/edit_product";
 import Wishlist from "./private/Wishlist";
+import CategoryProducts from "./private/CategoryProducts";
 
 function App() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -118,6 +119,7 @@ function App() {
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/search/:query" element={<SearchResults />} />
+        <Route path="/category/:category" element={<CategoryProducts />} />
 
         {/* Wishlist Route */}
         <Route path="/wishlist" element={<Wishlist />} />
