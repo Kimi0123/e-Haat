@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Ensure content doesn't get hidden behind fixed navbar */
+body {
+    padding-top: 128px; /* 80 (main nav) + 48 (second nav) */
+  }
+  
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for better visual feedback */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
