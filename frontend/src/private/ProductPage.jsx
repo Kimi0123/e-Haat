@@ -32,7 +32,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 const ProductPage = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, currentUser } = useAuth();
   const { showNotification } = useNotification();
   const { addToCart, isInCart } = useCart();
 
@@ -44,7 +44,12 @@ const ProductPage = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  // Add review form state
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewTitle, setReviewTitle] = useState("");
+  const [reviewComment, setReviewComment] = useState("");
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -181,6 +186,61 @@ const ProductPage = () => {
     setTimeout(() => {
       navigate("/cart");
     }, 1000);
+  };
+
+  // Add review submit handler
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!reviewRating || !reviewComment.trim()) {
+      showNotification(
+        "error",
+        "Incomplete",
+        "Please provide a rating and comment."
+      );
+      return;
+    }
+    setIsSubmittingReview(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+        body: JSON.stringify({
+          productId: productId,
+          rating: reviewRating,
+          title: reviewTitle,
+          comment: reviewComment,
+        }),
+      });
+      if (response.ok) {
+        showNotification(
+          "success",
+          "Review Submitted",
+          "Thank you for your feedback!"
+        );
+        setShowReviewForm(false);
+        setReviewRating(0);
+        setReviewTitle("");
+        setReviewComment("");
+        // Refetch product to update reviews
+        // (You may want to refactor fetchProduct to be callable here)
+        window.location.reload();
+      } else {
+        const err = await response.json();
+        showNotification(
+          "error",
+          "Error",
+          err.message || "Failed to submit review."
+        );
+      }
+    } catch (error) {
+      showNotification("error", "Error", "Failed to submit review.");
+    } finally {
+      setIsSubmittingReview(false);
+    }
   };
 
   return (
@@ -605,6 +665,82 @@ const ProductPage = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="space-y-6">
+                      {/* Write Review Button */}
+                      {isLoggedIn && (
+                        <div className="mb-6">
+                          {!showReviewForm ? (
+                            <button
+                              onClick={() => setShowReviewForm(true)}
+                              className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700"
+                            >
+                              Write a Review
+                            </button>
+                          ) : (
+                            <form
+                              onSubmit={handleReviewSubmit}
+                              className="bg-gray-50 p-6 rounded-lg shadow space-y-4"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <span className="font-medium text-black">
+                                  Your Rating:
+                                </span>
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <button
+                                    type="button"
+                                    key={star}
+                                    onClick={() => setReviewRating(star)}
+                                    className="focus:outline-none"
+                                  >
+                                    <FaStar
+                                      className={`w-6 h-6 ${
+                                        star <= reviewRating
+                                          ? "text-yellow-400"
+                                          : "text-gray-300"
+                                      }`}
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+                              <input
+                                type="text"
+                                placeholder="Review Title (optional)"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-black"
+                                value={reviewTitle}
+                                onChange={(e) => setReviewTitle(e.target.value)}
+                              />
+                              <textarea
+                                placeholder="Your review..."
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-black"
+                                rows={4}
+                                value={reviewComment}
+                                onChange={(e) =>
+                                  setReviewComment(e.target.value)
+                                }
+                                required
+                              />
+                              <div className="flex items-center space-x-4">
+                                <button
+                                  type="submit"
+                                  className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-60"
+                                  disabled={isSubmittingReview}
+                                >
+                                  {isSubmittingReview
+                                    ? "Submitting..."
+                                    : "Submit Review"}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setShowReviewForm(false)}
+                                  className="text-gray-600 hover:text-gray-900"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </form>
+                          )}
+                        </div>
+                      )}
+                      {/* Reviews List */}
                       {product.reviews.map((review) => (
                         <div
                           key={review.id}
@@ -635,7 +771,7 @@ const ProductPage = () => {
                               ))}
                             </div>
                           </div>
-                          <h4 className="font-semibold mb-1 text-black">
+                          <h4 className="font-semibold text-black mb-1">
                             {review.title}
                           </h4>
                           <p className="text-black mb-2">{review.comment}</p>
