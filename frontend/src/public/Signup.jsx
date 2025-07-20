@@ -25,7 +25,7 @@ function Signup() {
     agree: false,
   });
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useAuth();
+  const { login: authLogin } = useAuth();
   const { showNotification } = useNotification();
 
   const handleChange = (e) => {
@@ -77,14 +77,40 @@ function Signup() {
       const data = await res.json();
 
       if (res.ok) {
-        showNotification(
-          "success",
-          "Account Created",
-          "Your account has been created successfully! Redirecting to login..."
-        );
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+        // If backend returns token and user, log in immediately
+        if (data.token && data.user) {
+          authLogin(
+            {
+              id: data.user.id || data.user._id || data.user.uid,
+              uid: data.user.uid || data.user.id || data.user._id,
+              email: data.user.email,
+              name:
+                data.user.name ||
+                (data.user.firstName
+                  ? data.user.firstName + " " + data.user.lastName
+                  : ""),
+              role: data.user.role || "user",
+            },
+            data.token
+          );
+          showNotification(
+            "success",
+            "Account Created",
+            "Your account has been created and you are now logged in! Redirecting to dashboard..."
+          );
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 2000);
+        } else {
+          showNotification(
+            "success",
+            "Account Created",
+            "Your account has been created successfully! Redirecting to login..."
+          );
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+        }
       } else {
         showNotification(
           "error",

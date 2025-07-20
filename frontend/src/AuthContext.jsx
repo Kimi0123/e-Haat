@@ -29,20 +29,23 @@ export function AuthProvider({ children }) {
     setIsLoggedIn(false);
   };
 
-  const login = (userData) => {
+  const login = (userData, token) => {
+    if (token) localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
     setCurrentUser(userData);
     setIsLoggedIn(true);
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      isLoggedIn, 
-      setIsLoggedIn, 
-      logout, 
-      login, 
-      currentUser 
-    }}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        logout,
+        login,
+        currentUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

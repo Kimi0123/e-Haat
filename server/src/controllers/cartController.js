@@ -2,6 +2,9 @@ const Cart = require("../models/Cart");
 
 // Get cart for current user
 exports.getCart = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
   try {
     const userId = req.user;
     let cart = await Cart.findOne({ where: { userId } });
@@ -16,6 +19,9 @@ exports.getCart = async (req, res) => {
 
 // Save/update cart for current user
 exports.saveCart = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
   try {
     const userId = req.user;
     const { items } = req.body;
@@ -34,6 +40,9 @@ exports.saveCart = async (req, res) => {
 
 // Clear cart for current user
 exports.clearCart = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
   try {
     const userId = req.user;
     let cart = await Cart.findOne({ where: { userId } });

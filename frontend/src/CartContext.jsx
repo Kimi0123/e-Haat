@@ -17,7 +17,8 @@ export function CartProvider({ children }) {
 
   // Get current user ID for user-specific cart storage
   const getCurrentUserId = () => {
-    if (currentUser && currentUser.id) return currentUser.id;
+    if (currentUser && (currentUser.id || currentUser.uid))
+      return currentUser.id || currentUser.uid;
     return null;
   };
 
@@ -75,7 +76,7 @@ export function CartProvider({ children }) {
   useEffect(() => {
     const userId = getCurrentUserId();
     setCurrentUserId(userId);
-    if (isLoggedIn && currentUser && currentUser.id) {
+    if (isLoggedIn && currentUser && (currentUser.id || currentUser.uid)) {
       // Fetch from backend
       fetchCartFromBackend();
     } else {
@@ -103,7 +104,9 @@ export function CartProvider({ children }) {
     selectedSize = "",
     selectedColor = ""
   ) => {
-    if (!isLoggedIn || !currentUser || !currentUser.id) {
+    console.log("[CartContext] currentUser object:", currentUser);
+    const userId = currentUser && (currentUser.id || currentUser.uid);
+    if (!isLoggedIn || !currentUser || !userId) {
       if (window && window.dispatchEvent) {
         window.dispatchEvent(
           new CustomEvent("cart-notification", {
@@ -128,6 +131,16 @@ export function CartProvider({ children }) {
           item.color === selectedColor
       );
 
+      // Always get a relative image path
+      let image = product.images?.[0] || product.image;
+      if (image && image.startsWith("http")) {
+        // Extract relative path from full URL
+        const idx = image.indexOf("/uploads/");
+        if (idx !== -1) {
+          image = image.substring(idx);
+        }
+      }
+
       if (existingItemIndex !== -1) {
         // Update quantity of existing item
         const updatedCart = [...prevCart];
@@ -143,7 +156,7 @@ export function CartProvider({ children }) {
           quantity,
           size: selectedSize,
           color: selectedColor,
-          image: product.images?.[0] || product.image,
+          image,
           stock: product.stock,
         };
         return [...prevCart, cartItem];

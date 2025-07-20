@@ -24,11 +24,13 @@ import {
 import { useCart } from "../CartContext";
 import { useNotification } from "../NotificationContext";
 import { formatPrice } from "../utils/currency";
+import { useAuth } from "../AuthContext";
 
 export default function BillingPage() {
   const navigate = useNavigate();
   const { cart, getCartSubtotal, clearCart } = useCart();
   const { showNotification } = useNotification();
+  const { currentUser } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -245,13 +247,11 @@ export default function BillingPage() {
     setIsLoading(true);
 
     try {
-      // Get user info from localStorage or context
-      const userToken = localStorage.getItem("userToken");
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-
+      // Get user info from AuthContext and localStorage
+      const token = localStorage.getItem("token");
       // Prepare order data
       const orderData = {
-        userId: user?.uid || "guest",
+        userId: currentUser?.id || currentUser?.uid || "guest",
         items: cart.map((item) => ({
           productId: item.id,
           name: item.name,
@@ -293,7 +293,7 @@ export default function BillingPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(userToken && { Authorization: `Bearer ${userToken}` }),
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify(orderData),
       });

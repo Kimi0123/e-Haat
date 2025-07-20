@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -31,11 +31,17 @@ export default function SearchResults() {
   const [showFilters, setShowFilters] = useState(false);
 
   const searchQuery = decodeURIComponent(query || "");
+  const debounceTimeout = useRef(null);
 
   useEffect(() => {
-    if (searchQuery) {
-      performSearch();
+    if (!searchQuery) return;
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
     }
+    debounceTimeout.current = setTimeout(() => {
+      performSearch();
+    }, 400); // 400ms debounce
+    return () => clearTimeout(debounceTimeout.current);
   }, [searchQuery, sortBy, priceFilter, categoryFilter]);
 
   const performSearch = async () => {
@@ -93,38 +99,11 @@ export default function SearchResults() {
     return "Over Rs. 10,000";
   };
 
-  const filteredResults = searchResults.filter((product) => {
-    if (priceFilter === "all") return true;
-
-    const price = parseFloat(product.price);
-    switch (priceFilter) {
-      case "under-1000":
-        return price < 1000;
-      case "1000-5000":
-        return price >= 1000 && price < 5000;
-      case "5000-10000":
-        return price >= 5000 && price < 10000;
-      case "over-10000":
-        return price >= 10000;
-      default:
-        return true;
-    }
-  });
-
-  const sortedResults = [...filteredResults].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return parseFloat(a.price) - parseFloat(b.price);
-      case "price-high":
-        return parseFloat(b.price) - parseFloat(a.price);
-      case "rating":
-        return (b.rating || 0) - (a.rating || 0);
-      case "newest":
-        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-      default:
-        return 0;
-    }
-  });
+  // Remove client-side filtering and sorting if backend supports it
+  // const filteredResults = searchResults.filter((product) => { ... });
+  // const sortedResults = [...filteredResults].sort((a, b) => { ... });
+  // Instead, use searchResults directly
+  const resultsToShow = searchResults;
 
   if (isLoading) {
     return (
@@ -168,7 +147,7 @@ export default function SearchResults() {
                   Search Results
                 </h1>
                 <p className="text-gray-600">
-                  {sortedResults.length} results for "{searchQuery}"
+                  {resultsToShow.length} results for "{searchQuery}"
                 </p>
               </div>
             </div>
@@ -266,7 +245,7 @@ export default function SearchResults() {
 
           {/* Search Results */}
           <div className={`${showFilters ? "lg:col-span-3" : "lg:col-span-4"}`}>
-            {sortedResults.length === 0 ? (
+            {resultsToShow.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -293,7 +272,7 @@ export default function SearchResults() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <AnimatePresence>
-                  {sortedResults.map((product, index) => (
+                  {resultsToShow.map((product, index) => (
                     <motion.div
                       key={product.id}
                       initial={{ opacity: 0, y: 20 }}

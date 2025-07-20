@@ -15,7 +15,7 @@ function Login() {
     password: "",
   });
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useAuth();
+  const { login: authLogin } = useAuth();
   const { showNotification } = useNotification();
 
   const togglePassword = () => {
@@ -54,19 +54,28 @@ function Login() {
         return;
       }
 
-      // Store token and user data in localStorage for future authenticated requests
-      localStorage.setItem("token", data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          uid: data.user.id || data.user._id,
+      // Use AuthContext login function
+      authLogin(
+        {
+          id: data.user.id || data.user._id || data.user.uid,
+          uid: data.user.uid || data.user.id || data.user._id,
           email: data.user.email,
           name:
-            data.user.name || data.user.firstName + " " + data.user.lastName,
+            data.user.name ||
+            (data.user.firstName
+              ? data.user.firstName + " " + (data.user.lastName || "")
+              : ""),
+          firstName: data.user.firstName,
+          lastName: data.user.lastName,
           role: data.user.role || "user",
-        })
+        },
+        data.token
       );
-      setIsLoggedIn(true);
+      console.log(
+        "[Login] Set user:",
+        JSON.parse(localStorage.getItem("user"))
+      );
+      console.log("[Login] Set token:", localStorage.getItem("token"));
 
       showNotification(
         "success",

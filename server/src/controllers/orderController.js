@@ -1,6 +1,16 @@
 const Order = require("../models/Order");
 const User = require("../models/User");
 
+// Helper to generate unique order number
+function generateOrderNumber() {
+  return (
+    "ORD-" +
+    Date.now().toString(36).toUpperCase() +
+    "-" +
+    Math.floor(Math.random() * 10000)
+  );
+}
+
 // Place a new order
 exports.createOrder = async (req, res) => {
   try {
@@ -9,11 +19,24 @@ exports.createOrder = async (req, res) => {
       items,
       totalAmount,
       shippingAddress,
+      billingAddress,
       paymentMethod,
       couponCode,
       discountAmount,
       status,
     } = req.body;
+
+    // Validate required fields
+    if (!items || !Array.isArray(items) || items.length === 0)
+      return res.status(400).json({ message: "No items in order." });
+    if (!totalAmount)
+      return res.status(400).json({ message: "Missing totalAmount." });
+    if (!shippingAddress)
+      return res.status(400).json({ message: "Missing shippingAddress." });
+    if (!billingAddress)
+      return res.status(400).json({ message: "Missing billingAddress." });
+    if (!paymentMethod)
+      return res.status(400).json({ message: "Missing paymentMethod." });
 
     // Handle user ID - create default user if needed
     let finalUserId = userId;
@@ -22,7 +45,6 @@ exports.createOrder = async (req, res) => {
       let defaultUser = await User.findOne({
         where: { email: "guest@ehaat.com" },
       });
-
       if (!defaultUser) {
         // Create default user for guest orders
         defaultUser = await User.create({
@@ -32,7 +54,6 @@ exports.createOrder = async (req, res) => {
           role: "user",
         });
       }
-
       finalUserId = defaultUser.id;
     } else {
       // Verify user exists
@@ -47,10 +68,12 @@ exports.createOrder = async (req, res) => {
 
     // Create order
     const order = await Order.create({
+      orderNumber: generateOrderNumber(),
       userId: finalUserId,
       items: items,
       totalAmount: totalAmount,
       shippingAddress: shippingAddress,
+      billingAddress: billingAddress,
       paymentMethod: paymentMethod,
       couponCode: couponCode,
       discountAmount: discountAmount || 0,
@@ -95,7 +118,8 @@ exports.getAllOrders = async (req, res) => {
 // Get orders for current user
 exports.getMyOrders = async (req, res) => {
   try {
-    const userId = req.user;
+    // Use req.userId as set by the auth middleware
+    const userId = req.userId;
     const orders = await Order.findAll({
       where: { userId },
       order: [["createdAt", "DESC"]],

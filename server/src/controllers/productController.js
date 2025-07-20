@@ -36,11 +36,11 @@ exports.searchProducts = async (req, res) => {
     // Build search conditions
     const searchConditions = {
       [Op.or]: [
-        { name: { [Op.like]: `%${searchTerm}%` } },
-        { description: { [Op.like]: `%${searchTerm}%` } },
-        { category: { [Op.like]: `%${searchTerm}%` } },
-        { subcategory: { [Op.like]: `%${searchTerm}%` } },
-        { sellerName: { [Op.like]: `%${searchTerm}%` } },
+        { name: { [Op.iLike]: `%${searchTerm}%` } },
+        { description: { [Op.iLike]: `%${searchTerm}%` } },
+        { category: { [Op.iLike]: `%${searchTerm}%` } },
+        { subcategory: { [Op.iLike]: `%${searchTerm}%` } },
+        { sellerName: { [Op.iLike]: `%${searchTerm}%` } },
       ],
       isActive: true,
     };
@@ -65,7 +65,7 @@ exports.searchProducts = async (req, res) => {
 
     // Add category filter
     if (category && category !== "all") {
-      searchConditions.category = { [Op.like]: `%${category}%` };
+      searchConditions.category = { [Op.iLike]: `%${category}%` };
     }
 
     // Build order clause
