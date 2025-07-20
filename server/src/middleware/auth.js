@@ -18,8 +18,9 @@ function authenticateJWT(req, res, next) {
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  // Attach user ID to request
+  // Attach user ID to request (for compatibility)
   req.userId = decoded.id;
+  req.user = decoded.id;
   next();
 }
 

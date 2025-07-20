@@ -777,7 +777,11 @@ const ProductPage = () => {
                           <p className="text-black mb-2">{review.comment}</p>
                           <div className="flex items-center justify-between text-sm text-black">
                             <span>
-                              {new Date(review.date).toLocaleDateString()}
+                              {review.createdAt
+                                ? new Date(
+                                    review.createdAt
+                                  ).toLocaleDateString()
+                                : "-"}
                             </span>
                             <button className="flex items-center space-x-1 hover:text-gray-700 text-black">
                               <FaThumbsUp />

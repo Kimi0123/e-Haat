@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const { Op } = require("sequelize");
+const Review = require("../models/Review");
 
 // Get all products
 exports.getAllProducts = async (req, res) => {
@@ -110,7 +111,10 @@ exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ message: "Product not found" });
-    res.json(product);
+    // Fetch reviews for this product
+    const reviews = await Review.findAll({ where: { productId: product.id } });
+    const productWithReviews = { ...product.toJSON(), reviews };
+    res.json(productWithReviews);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
