@@ -5,8 +5,6 @@ import Homepage from "./public/Homepage";
 import AboutUs from "./public/AboutUs";
 import Categories from "./private/Categories";
 import Deals from "./private/Deals";
-import Contact from "./public/Contact";
-import ChangePw from "./public/ChangePw";
 import ProductPage from "./private/ProductPage";
 import SearchResults from "./public/SearchResults";
 import AdminLogin from "./public/AdminLogin";
@@ -15,7 +13,7 @@ import AdminRoute from "./components/AdminRoute";
 import CartPage from "./private/CartPage";
 import Billing from "./private/billing";
 import UserDashboard from "./private/Dashboard";
-import OrderHistory from "./private/orderhistory";
+import OrderHistory from "./private/OrderHistory";
 import OrderTracking from "./private/OrderTracking";
 import Settings from "./private/Settings";
 import Help from "./private/Help";
@@ -31,8 +29,10 @@ import AdminOrders from "./private/admin_pages/orders";
 import AdminUsers from "./private/admin_pages/users";
 import AdminProducts from "./private/admin_pages/products";
 import AdminSettings from "./private/admin_pages/settings";
-import AddProduct from "./private/admin_pages/add_product";
-import EditProduct from "./private/admin_pages/edit_product";
+import AddProduct from "./private/admin_pages/AddProduct";
+import EditProduct from "./private/admin_pages/EditProfile";
+import ChangePassword from "./public/ChangePassword";
+import Conatct from "./public/Conatct";
 import Wishlist from "./private/Wishlist";
 import CategoryProducts from "./private/CategoryProducts";
 
@@ -114,7 +114,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<AboutUs />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/contact" element={<Conatct />} />
         <Route path="/landing" element={<Homepage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/admin/login" element={<AdminLogin />} />
@@ -193,7 +193,7 @@ function App() {
           path="/dashboard/changepw"
           element={
             <PrivateRoute>
-              <ChangePw />
+              <ChangePassword />
             </PrivateRoute>
           }
         />
