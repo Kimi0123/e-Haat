@@ -1,97 +1,87 @@
 import React from "react";
+import { formatPrice, parsePrice } from "../utils/currency";
 
+const orders = [
+  {
+    id: 1,
+    orderNumber: "ORD-001",
+    date: "2024-01-15",
+    status: "Delivered",
+    total: "Rs. 3200",
+  },
+  {
+    id: 2,
+    orderNumber: "ORD-002",
+    date: "2024-01-10",
+    status: "Processing",
+    total: "Rs. 1500",
+  },
+  {
+    id: 3,
+    orderNumber: "ORD-003",
+    date: "2024-01-05",
+    status: "Shipped",
+    total: "Rs. 700",
+  },
+];
+
+const getStatusStyle = (status) => {
+  switch (status) {
+    case "Delivered":
+      return "bg-green-100 text-green-800";
+    case "Processing":
+      return "bg-yellow-100 text-yellow-800";
+    case "Shipped":
+      return "bg-blue-100 text-blue-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
 
 export default function OrderHistory() {
-  // Mock order data
-  const orders = [
-    {
-      id: "ORD123456",
-      date: "2025-07-10",
-      items: 3,
-      total: "Rs. 3200",
-      status: "Delivered",
-    },
-    {
-      id: "ORD123457",
-      date: "2025-07-05",
-      items: 2,
-      total: "Rs. 1500",
-      status: "Pending",
-    },
-    {
-      id: "ORD123458",
-      date: "2025-06-30",
-      items: 1,
-      total: "Rs. 700",
-      status: "Cancelled",
-    },
-  ];
-
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case "Delivered":
-        return "bg-green-100 text-green-700";
-      case "Pending":
-        return "bg-yellow-100 text-yellow-800";
-      case "Cancelled":
-        return "bg-red-100 text-red-700";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
-    <div className="min-h-screen flex flex-col bg-white text-black">
-      <main className="flex-1 px-8 py-10 bg-gray-100">
-        <h1 className="text-3xl font-bold mb-8">Order History</h1>
-        <div className="bg-white shadow rounded-lg p-6">
-          {orders.length === 0 ? (
-            <p className="text-gray-500">No orders found yet.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full table-auto text-left text-sm">
-                <thead>
-                  <tr className="bg-gray-50 text-gray-700 uppercase text-xs tracking-wider">
-                    <th className="py-3 px-4">Order ID</th>
-                    <th className="py-3 px-4">Date</th>
-                    <th className="py-3 px-4">Items</th>
-                    <th className="py-3 px-4">Total</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order) => (
-                    <tr
-                      key={order.id}
-                      className="border-b hover:bg-gray-50 transition"
-                    >
-                      <td className="py-3 px-4 font-medium">{order.id}</td>
-                      <td className="py-3 px-4">{order.date}</td>
-                      <td className="py-3 px-4">{order.items}</td>
-                      <td className="py-3 px-4">{order.total}</td>
-                      <td className="py-3 px-4">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(
-                            order.status
-                          )}`}
-                        >
-                          {order.status}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <button className="text-red-600 hover:underline text-sm">
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+    <div className="px-6 pt-[140px] pb-10 bg-white text-black max-w-6xl mx-auto">
+      <h2 className="text-3xl font-bold mb-8">📋 Order History</h2>
+
+      {orders.length === 0 ? (
+        <p className="text-gray-500">No orders found yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {orders.map((order) => (
+            <div
+              key={order.id}
+              className="border rounded-lg p-6 hover:shadow-md transition-shadow"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    Order #{order.orderNumber}
+                  </h3>
+                  <p className="text-gray-600">
+                    Placed on {new Date(order.date).toLocaleDateString()}
+                  </p>
+                </div>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(
+                    order.status
+                  )}`}
+                >
+                  {order.status}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <div className="text-lg font-bold">
+                  Total: {formatPrice(parsePrice(order.total))}
+                </div>
+                <button className="btn bg-red-600 text-white hover:bg-red-700">
+                  View Details
+                </button>
+              </div>
             </div>
-          )}
+          ))}
         </div>
-      </main>
+      )}
     </div>
   );
 }

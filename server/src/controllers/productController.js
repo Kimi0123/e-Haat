@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const { Op } = require("sequelize");
 
 // Get all products
 exports.getAllProducts = async (req, res) => {
@@ -6,6 +7,7 @@ exports.getAllProducts = async (req, res) => {
     const products = await Product.findAll();
     res.json(products);
   } catch (err) {
+    console.error("Get all products error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -17,6 +19,89 @@ exports.getFeaturedProducts = async (req, res) => {
     res.json(products);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Search products
+exports.searchProducts = async (req, res) => {
+  try {
+    const { q, sort, price, category } = req.query;
+
+    if (!q || q.trim() === "") {
+      return res.json({ products: [] });
+    }
+
+    const searchTerm = q.trim();
+
+    // Build search conditions
+    const searchConditions = {
+      [Op.or]: [
+        { name: { [Op.like]: `%${searchTerm}%` } },
+        { description: { [Op.like]: `%${searchTerm}%` } },
+        { category: { [Op.like]: `%${searchTerm}%` } },
+        { subcategory: { [Op.like]: `%${searchTerm}%` } },
+        { sellerName: { [Op.like]: `%${searchTerm}%` } },
+      ],
+      isActive: true,
+    };
+
+    // Add price filter
+    if (price && price !== "all") {
+      switch (price) {
+        case "under-1000":
+          searchConditions.price = { [Op.lt]: 1000 };
+          break;
+        case "1000-5000":
+          searchConditions.price = { [Op.between]: [1000, 4999] };
+          break;
+        case "5000-10000":
+          searchConditions.price = { [Op.between]: [5000, 9999] };
+          break;
+        case "over-10000":
+          searchConditions.price = { [Op.gte]: 10000 };
+          break;
+      }
+    }
+
+    // Add category filter
+    if (category && category !== "all") {
+      searchConditions.category = { [Op.like]: `%${category}%` };
+    }
+
+    // Build order clause
+    let orderClause = [];
+    switch (sort) {
+      case "price-low":
+        orderClause.push(["price", "ASC"]);
+        break;
+      case "price-high":
+        orderClause.push(["price", "DESC"]);
+        break;
+      case "rating":
+        orderClause.push(["rating", "DESC"]);
+        break;
+      case "newest":
+        orderClause.push(["createdAt", "DESC"]);
+        break;
+      default:
+        // Default relevance sorting (by name match first)
+        orderClause.push(["name", "ASC"]);
+        break;
+    }
+
+    const products = await Product.findAll({
+      where: searchConditions,
+      order: orderClause,
+      limit: 50, // Limit results to prevent overwhelming response
+    });
+
+    res.json({
+      products,
+      total: products.length,
+    });
+  } catch (err) {
+    console.error("Search error:", err);
+    res.status(500).json({ message: "Search failed", error: err.message });
   }
 };
 

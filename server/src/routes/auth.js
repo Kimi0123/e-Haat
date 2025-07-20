@@ -19,6 +19,13 @@ function generateRefreshToken(user) {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 }
 
+function generateAdminToken(user) {
+  // Set admin token to expire in 2 hours
+  return jwt.sign({ id: user.id, isAdmin: true }, process.env.JWT_SECRET, {
+    expiresIn: "2h",
+  });
+}
+
 // ----------------------- SIGNUP -----------------------
 
 router.post("/signup", async (req, res) => {
@@ -85,6 +92,92 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.error("Login Error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// ----------------------- ADMIN LOGIN -----------------------
+
+router.post("/admin/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if user exists
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(400).json({ message: "Admin not found" });
+    }
+
+    // Check if user is admin
+    if (!user.isAdmin) {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Admin privileges required." });
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid admin credentials" });
+    }
+
+    // Generate admin token
+    const adminToken = generateAdminToken(user);
+
+    res.json({
+      message: "Admin login successful",
+      token: adminToken,
+      user: {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+    });
+  } catch (err) {
+    console.error("Admin Login Error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// ----------------------- CREATE ADMIN USER -----------------------
+
+router.post("/create-admin", async (req, res) => {
+  try {
+    const { firstName, lastName, email, phone, password } = req.body;
+
+    // Check if user exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create admin user
+    const adminUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      phone,
+      password: hashedPassword,
+      isAdmin: true,
+    });
+
+    res.status(201).json({
+      message: "Admin user created successfully",
+      user: {
+        id: adminUser.id,
+        firstName: adminUser.firstName,
+        lastName: adminUser.lastName,
+        email: adminUser.email,
+        isAdmin: adminUser.isAdmin,
+      },
+    });
+  } catch (err) {
+    console.error("Create Admin Error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });

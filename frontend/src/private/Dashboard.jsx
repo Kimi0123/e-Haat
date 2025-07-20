@@ -115,10 +115,10 @@ export default function Dashboard() {
 
             <div className="flex gap-6 mt-6">
               <button
-                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition-colors duration-200"
-                onClick={() => console.log("Edit Profile clicked")}
+                onClick={() => navigate("/edit-profile")}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
               >
-                EDIT PROFILE
+                Edit Profile
               </button>
               <button
                 className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition-colors duration-200"

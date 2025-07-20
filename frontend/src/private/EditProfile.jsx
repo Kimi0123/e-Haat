@@ -21,15 +21,12 @@ export default function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Profile updated:", form);
     alert("Profile updated successfully!");
     navigate("/dashboard");
   };
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col">
-      
-
       <main className="flex-1 px-10 py-12 bg-gray-100">
         <h1 className="text-3xl font-bold mb-6">Edit Profile</h1>
         <form

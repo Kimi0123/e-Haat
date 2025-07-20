@@ -108,13 +108,20 @@ function Signup() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("✅ Google SignUp Successful:", user);
-      showNotification(
-        "success",
-        "Google Signup",
-        "Successfully signed up with Google!"
+
+      // Store user data in localStorage
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        })
       );
-      // You can send this to backend too if needed
+
+      showNotification("success", "Success!", "Google SignUp Successful!");
+      navigate("/dashboard");
     } catch (error) {
       console.error("❌ Google Sign-Up Error:", error);
       showNotification(

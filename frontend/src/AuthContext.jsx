@@ -3,26 +3,46 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("user"));
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const handleStorage = () => setIsLoggedIn(!!localStorage.getItem("token"));
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    setCurrentUser(user);
+    setIsLoggedIn(!!user);
+  }, []);
+
+  useEffect(() => {
+    const handleStorage = () => {
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      setCurrentUser(user);
+      setIsLoggedIn(!!user);
+    };
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
-  // Optionally, update on every render (for SPA navigation)
-  useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem("token"));
-  });
-
   const logout = () => {
+    localStorage.removeItem("user");
     localStorage.removeItem("token");
+    setCurrentUser(null);
     setIsLoggedIn(false);
   };
 
+  const login = (userData) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    setCurrentUser(userData);
+    setIsLoggedIn(true);
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, logout }}>
+    <AuthContext.Provider value={{ 
+      isLoggedIn, 
+      setIsLoggedIn, 
+      logout, 
+      login, 
+      currentUser 
+    }}>
       {children}
     </AuthContext.Provider>
   );

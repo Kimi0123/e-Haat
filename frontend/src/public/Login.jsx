@@ -54,8 +54,18 @@ function Login() {
         return;
       }
 
-      // Store token in localStorage for future authenticated requests
+      // Store token and user data in localStorage for future authenticated requests
       localStorage.setItem("token", data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          uid: data.user.id || data.user._id,
+          email: data.user.email,
+          name:
+            data.user.name || data.user.firstName + " " + data.user.lastName,
+          role: data.user.role || "user",
+        })
+      );
       setIsLoggedIn(true);
 
       showNotification(

@@ -8,7 +8,10 @@ router.get("/", productController.getAllProducts);
 // Get featured products
 router.get("/featured", productController.getFeaturedProducts);
 
-// Get product by ID
+// Search products (must come before /:id route)
+router.get("/search", productController.searchProducts);
+
+// Get product by ID (must come after /search route)
 router.get("/:id", productController.getProductById);
 
 module.exports = router;

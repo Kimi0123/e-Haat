@@ -45,7 +45,7 @@ const Product = sequelize.define(
     },
     sellerId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true, // Changed to true to fix database error
       references: {
         model: "Users",
         key: "id",
@@ -53,7 +53,7 @@ const Product = sequelize.define(
     },
     sellerName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true, // Changed to true to fix database error
     },
     location: {
       type: DataTypes.STRING,
