@@ -86,12 +86,16 @@ export default function Homepage() {
   };
 
   const handleAddToCart = (product) => {
-    addToCart(product);
-    showNotification(
-      "success",
-      "Added to Cart",
-      `${product.title} has been added to your cart!`
-    );
+    const added = addToCart(product);
+    if (added) {
+      showNotification(
+        "success",
+        "Added to Cart",
+        `${product.title} has been added to your cart!`
+      );
+    } else {
+      navigate("/login");
+    }
   };
 
   const addToWishlist = (product) => {

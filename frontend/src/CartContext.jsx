@@ -1,16 +1,24 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
+  const { currentUser, isLoggedIn } = useAuth();
   const [cart, setCart] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [currentUserId, setCurrentUserId] = useState(null);
 
   // Get current user ID for user-specific cart storage
   const getCurrentUserId = () => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    return user.uid || "guest";
+    if (currentUser && currentUser.id) return currentUser.id;
+    return null;
   };
 
   // Get cart key for current user
@@ -18,60 +26,99 @@ export function CartProvider({ children }) {
     return `cart_${userId}`;
   };
 
+  // Fetch cart from backend for logged-in user
+  const fetchCartFromBackend = useCallback(async () => {
+    if (!isLoggedIn || !currentUser || !localStorage.getItem("token")) return;
+    try {
+      const res = await fetch("http://localhost:5000/api/cart", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res.ok) {
+        const backendCart = await res.json();
+        setCart(backendCart);
+        setCartCount(backendCart.length);
+        // Also update localStorage for consistency
+        localStorage.setItem(
+          getCartKey(currentUser.id),
+          JSON.stringify(backendCart)
+        );
+      }
+    } catch (err) {
+      console.error("Error fetching cart from backend:", err);
+    }
+    // eslint-disable-next-line
+  }, [isLoggedIn, currentUser]);
+
+  // Save cart to backend for logged-in user
+  const saveCartToBackend = useCallback(
+    async (items) => {
+      if (!isLoggedIn || !currentUser || !localStorage.getItem("token")) return;
+      try {
+        await fetch("http://localhost:5000/api/cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ items }),
+        });
+      } catch (err) {
+        console.error("Error saving cart to backend:", err);
+      }
+    },
+    [isLoggedIn, currentUser]
+  );
+
   // Update current user ID and reload cart when user changes
   useEffect(() => {
     const userId = getCurrentUserId();
-    if (userId !== currentUserId) {
-      setCurrentUserId(userId);
-
-      // Load cart for the new user
-      const cartKey = getCartKey(userId);
-      const savedCart = localStorage.getItem(cartKey);
-      if (savedCart) {
-        try {
-          const parsedCart = JSON.parse(savedCart);
-          setCart(parsedCart);
-          setCartCount(parsedCart.length);
-        } catch (error) {
-          console.error("Error parsing cart data:", error);
-          setCart([]);
-          setCartCount(0);
-        }
-      } else {
-        setCart([]);
-        setCartCount(0);
-      }
+    setCurrentUserId(userId);
+    if (isLoggedIn && currentUser && currentUser.id) {
+      // Fetch from backend
+      fetchCartFromBackend();
+    } else {
+      setCart([]);
+      setCartCount(0);
     }
-  }, [currentUserId]);
+    // eslint-disable-next-line
+  }, [isLoggedIn, currentUser]);
 
-  // Listen for user changes in localStorage
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const userId = getCurrentUserId();
-      if (userId !== currentUserId) {
-        setCurrentUserId(userId);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, [currentUserId]);
-
-  // Save cart to localStorage whenever it changes
+  // Save cart to backend whenever it changes
   useEffect(() => {
     if (currentUserId) {
-      const cartKey = getCartKey(currentUserId);
-      localStorage.setItem(cartKey, JSON.stringify(cart));
       setCartCount(cart.length);
+      if (isLoggedIn && currentUser && currentUser.id) {
+        saveCartToBackend(cart);
+      }
     }
+    // eslint-disable-next-line
   }, [cart, currentUserId]);
 
+  // Add to cart only if logged in
   const addToCart = (
     product,
     quantity = 1,
     selectedSize = "",
     selectedColor = ""
   ) => {
+    if (!isLoggedIn || !currentUser || !currentUser.id) {
+      if (window && window.dispatchEvent) {
+        window.dispatchEvent(
+          new CustomEvent("cart-notification", {
+            detail: {
+              type: "warning",
+              title: "Login Required",
+              message: "Please log in to add items to your cart.",
+            },
+          })
+        );
+      } else {
+        alert("Please log in to add items to your cart.");
+      }
+      return false;
+    }
     setCart((prevCart) => {
       // Check if product already exists in cart
       const existingItemIndex = prevCart.findIndex(
@@ -102,6 +149,7 @@ export function CartProvider({ children }) {
         return [...prevCart, cartItem];
       }
     });
+    return true;
   };
 
   const removeFromCart = (itemId, size = "", color = "") => {
@@ -125,6 +173,15 @@ export function CartProvider({ children }) {
 
   const clearCart = () => {
     setCart([]);
+    if (isLoggedIn && currentUser && currentUser.id) {
+      // Also clear backend cart
+      fetch("http://localhost:5000/api/cart", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }).catch((err) => console.error("Error clearing backend cart:", err));
+    }
   };
 
   const getCartTotal = () => {

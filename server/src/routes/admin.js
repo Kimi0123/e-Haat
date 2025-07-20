@@ -48,6 +48,27 @@ const upload = multer({
   },
 });
 
+// Error handling middleware for multer
+const handleUpload = (req, res, next) => {
+  upload.array("images", 5)(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({
+          message: "File too large. Maximum size is 5MB per image.",
+        });
+      }
+      return res.status(400).json({
+        message: "Upload error: " + err.message,
+      });
+    } else if (err) {
+      return res.status(400).json({
+        message: err.message,
+      });
+    }
+    next();
+  });
+};
+
 // Apply admin authentication to all routes
 router.use(authenticateAdmin);
 
@@ -425,7 +446,7 @@ router.put("/products/:id/status", async (req, res) => {
 
 // ----------------------- UPDATE PRODUCT -----------------------
 
-router.put("/products/:id", upload.array("images", 5), async (req, res) => {
+router.put("/products/:id", handleUpload, async (req, res) => {
   try {
     const {
       name,
@@ -573,7 +594,7 @@ router.delete("/products/:id", async (req, res) => {
 
 // ----------------------- CREATE PRODUCT -----------------------
 
-router.post("/products", upload.array("images", 5), async (req, res) => {
+router.post("/products", handleUpload, async (req, res) => {
   try {
     const {
       name,
@@ -603,7 +624,14 @@ router.post("/products", upload.array("images", 5), async (req, res) => {
     // Handle image uploads
     let imageUrls = [];
     if (req.files && req.files.length > 0) {
-      imageUrls = req.files.map((file) => `/uploads/products/${file.filename}`);
+      console.log(`Uploading ${req.files.length} images`);
+      imageUrls = req.files.map((file) => {
+        const imageUrl = `/uploads/products/${file.filename}`;
+        console.log(`Image uploaded: ${imageUrl}`);
+        return imageUrl;
+      });
+    } else {
+      console.log("No images uploaded");
     }
 
     // Parse tags if provided

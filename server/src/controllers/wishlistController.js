@@ -1,4 +1,5 @@
 const Wishlist = require("../models/Wishlist");
+const Product = require("../models/Product");
 
 // Add product to wishlist
 exports.addToWishlist = async (req, res) => {
@@ -35,9 +36,32 @@ exports.removeFromWishlist = async (req, res) => {
 exports.getWishlist = async (req, res) => {
   try {
     const userId = req.user;
-    const items = await Wishlist.findAll({ where: { userId } });
-    res.json(items);
+    const items = await Wishlist.findAll({ 
+      where: { userId },
+      include: [
+        {
+          model: Product,
+          as: 'Product',
+          attributes: ['id', 'name', 'price', 'images', 'rating', 'reviewCount']
+        }
+      ]
+    });
+    
+    // Transform the data to match frontend expectations
+    const wishlistItems = items.map(item => ({
+      id: item.Product.id,
+      name: item.Product.name,
+      price: item.Product.price,
+      image: item.Product.images && item.Product.images.length > 0 
+        ? item.Product.images[0] 
+        : null,
+      rating: item.Product.rating || 0,
+      reviewCount: item.Product.reviewCount || 0
+    }));
+    
+    res.json(wishlistItems);
   } catch (error) {
+    console.error("Error fetching wishlist:", error);
     res.status(500).json({ message: "Error fetching wishlist", error });
   }
 };

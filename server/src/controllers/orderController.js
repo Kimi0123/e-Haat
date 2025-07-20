@@ -91,3 +91,18 @@ exports.getAllOrders = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// Get orders for current user
+exports.getMyOrders = async (req, res) => {
+  try {
+    const userId = req.user;
+    const orders = await Order.findAll({
+      where: { userId },
+      order: [["createdAt", "DESC"]],
+    });
+    res.json(orders);
+  } catch (err) {
+    console.error("Get my orders error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

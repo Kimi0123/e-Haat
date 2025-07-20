@@ -136,12 +136,16 @@ const ProductPage = () => {
       return;
     }
 
-    addToCart(product, quantity, selectedSize, selectedColor);
-    showNotification(
-      "success",
-      "Added to Cart",
-      `${product.name} has been added to your cart!`
-    );
+    const added = addToCart(product, quantity, selectedSize, selectedColor);
+    if (added) {
+      showNotification(
+        "success",
+        "Added to Cart",
+        `${product.name} has been added to your cart!`
+      );
+    } else {
+      navigate("/login");
+    }
   };
 
   const handleAddToWishlist = () => {
@@ -251,7 +255,14 @@ const ProductPage = () => {
                   alt={product.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
+                    console.error("Image failed to load:", e.target.src);
                     e.target.src = "/placeholder-product.png";
+                  }}
+                  onLoad={() => {
+                    console.log(
+                      "Image loaded successfully:",
+                      product.images[selectedImage]
+                    );
                   }}
                 />
               </motion.div>
@@ -279,7 +290,14 @@ const ProductPage = () => {
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-full object-cover"
                       onError={(e) => {
+                        console.error(
+                          "Thumbnail failed to load:",
+                          e.target.src
+                        );
                         e.target.src = "/placeholder-product.png";
+                      }}
+                      onLoad={() => {
+                        console.log("Thumbnail loaded successfully:", image);
                       }}
                     />
                   </motion.button>

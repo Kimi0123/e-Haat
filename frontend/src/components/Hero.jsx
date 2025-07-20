@@ -38,7 +38,7 @@ const Hero = () => {
             }}
           >
             <img
-              src="/src/assets/banner.jpg"
+              src="/banner.jpg"
               alt="Banner"
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />

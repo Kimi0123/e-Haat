@@ -23,6 +23,7 @@ import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
+import { useNotification } from "./NotificationContext";
 
 // Admin Components
 import AdminDashboard from "./private/admin_pages/Dashboard";
@@ -38,6 +39,18 @@ function App() {
   const [showSecondNav, setShowSecondNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { isLoggedIn } = useAuth();
+  const { showNotification } = useNotification();
+
+  // Listen for cart-notification events
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.detail && e.detail.type && e.detail.title && e.detail.message) {
+        showNotification(e.detail.type, e.detail.title, e.detail.message);
+      }
+    };
+    window.addEventListener("cart-notification", handler);
+    return () => window.removeEventListener("cart-notification", handler);
+  }, [showNotification]);
 
   // Optimized scroll handler with throttling
   const handleScroll = useCallback(() => {
