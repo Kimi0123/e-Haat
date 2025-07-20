@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaSearch,
@@ -22,6 +22,7 @@ import {
 import bag from "../assets/bag.svg";
 import ehaat from "../assets/ehaat.svg";
 import { useAuth } from "../AuthContext";
+import { useCart } from "../CartContext";
 import { useNotification } from "../NotificationContext";
 
 export const NAVBAR_HEIGHT = 80;
@@ -35,6 +36,8 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
   const searchRef = useRef(null);
   const { logout } = useAuth();
   const { showNotification } = useNotification();
+  const { cartCount } = useCart();
+  const navigate = useNavigate();
 
   const navLinks = [
     { label: "Home", href: "/", icon: <FaHome /> },
@@ -59,9 +62,8 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Handle search functionality
-      console.log("Searching for:", searchQuery);
-      showNotification("info", "Search", `Searching for: ${searchQuery}`);
+      // Navigate to search results page
+      navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
@@ -196,7 +198,7 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
                 <NavLink to="/cart" className="relative">
                   <FaShoppingCart className="text-xl hover:text-red-500 transition-colors duration-200" />
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    0
+                    {cartCount}
                   </span>
                 </NavLink>
               </motion.div>
@@ -229,7 +231,7 @@ function Navbar({ showSecondNav, isMenuOpen, setMenuOpen, isLoggedIn }) {
                 <NavLink to="/cart" className="relative">
                   <FaShoppingCart className="text-xl hover:text-red-500 transition-colors duration-200" />
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    0
+                    {cartCount}
                   </span>
                 </NavLink>
               </motion.div>
