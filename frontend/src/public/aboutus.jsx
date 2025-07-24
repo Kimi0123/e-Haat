@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
+import story from "../assets/story.webp";
 
 export default function AboutUs() {
   return (
@@ -53,7 +54,7 @@ export default function AboutUs() {
             transition={{ duration: 0.6 }}
           >
             <img
-              src="story.webp"
+              src={story}
               alt="Our story"
               className="rounded-xl shadow-xl hover:scale-105 transition-transform duration-300"
             />
