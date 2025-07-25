@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "../../../components/Navbar";
-import Footer from "../../../components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function OrderTracking() {
   const [orderId, setOrderId] = useState("");
@@ -66,7 +66,9 @@ export default function OrderTracking() {
               ))}
             </ul>
           ) : trackingData && trackingData.length === 0 ? (
-            <p className="text-red-600 font-semibold">No tracking info found for this ID.</p>
+            <p className="text-red-600 font-semibold">
+              No tracking info found for this ID.
+            </p>
           ) : null}
         </div>
       </main>

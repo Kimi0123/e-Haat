@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "../../../components/Navbar";
-import Footer from "../../../components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
 export default function EditProfile() {
@@ -21,15 +21,12 @@ export default function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Profile updated:", form);
     alert("Profile updated successfully!");
     navigate("/dashboard");
   };
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col">
-      <Navbar />
-
       <main className="flex-1 px-10 py-12 bg-gray-100">
         <h1 className="text-3xl font-bold mb-6">Edit Profile</h1>
         <form
